@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10171" systemVersion="15F34" minimumToolsVersion="Xcode 7.0">
+    <entity name="UsageEntity" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="collectionType" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
+        <attribute name="usage" attributeType="Integer 32" minValueString="0" maxValueString="65535" syncable="YES"/>
+        <relationship name="usagePage" maxCount="1" deletionRule="Nullify" destinationEntity="UsagePageEntity" inverseName="usages" inverseEntity="UsagePageEntity" syncable="YES"/>
+    </entity>
+    <entity name="UsagePageEntity" representedClassName="NSManagedObject" syncable="YES">
+        <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
+        <attribute name="usageNameFormat" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="usagePage" attributeType="Integer 32" minValueString="0" maxValueString="65535" syncable="YES"/>
+        <relationship name="usages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UsageEntity" inverseName="usagePage" inverseEntity="UsageEntity" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="UsageEntity" positionX="-54" positionY="-9" width="128" height="105"/>
+        <element name="UsagePageEntity" positionX="-36" positionY="36" width="128" height="105"/>
+    </elements>
+</model>
