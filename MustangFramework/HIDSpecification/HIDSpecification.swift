@@ -21,38 +21,38 @@ private let DataFileName = "HIDUsageTableDB"
 
 /*==========================================================================*/
 
-public class HIDSpecification: NSObject {
+open class HIDSpecification: NSObject {
     
-    private static let managedObjectContext: NSManagedObjectContext? = {
+    fileprivate static let managedObjectContext: NSManagedObjectContext? = {
         
-        let bundle = NSBundle( forClass: HIDSpecification.self )
+        let bundle = Bundle( for: HIDSpecification.self )
         
-        guard let dataModelURL = bundle.URLForResource( ModelFileName, withExtension: "momd" ) else {
-            print( "HIDSpecification framework failed to locate data model \"\(ModelFileName)\"" )
+        guard let dataModelURL = bundle.url( forResource: ModelFileName, withExtension: "momd" ) else {
+            Swift.print( "HIDSpecification framework failed to locate data model \"\(ModelFileName)\"" )
             return nil
         }
-        guard let managedObjectModel = NSManagedObjectModel( contentsOfURL: dataModelURL ) else {
-            print( "HIDSpecification framework failed to load data model \"\(dataModelURL)\"" )
+        guard let managedObjectModel = NSManagedObjectModel( contentsOf: dataModelURL ) else {
+            Swift.print( "HIDSpecification framework failed to load data model \"\(dataModelURL)\"" )
             return nil
         }
         
         let persistentStoreCoordinator = NSPersistentStoreCoordinator( managedObjectModel: managedObjectModel )
         
-        guard let databaseURL = bundle.URLForResource( DataFileName, withExtension: "sqlite" ) else {
-            print( "HIDSpecification framework failed to locate data store \"\(DataFileName)\"" )
+        guard let databaseURL = bundle.url( forResource: DataFileName, withExtension: "sqlite" ) else {
+            Swift.print( "HIDSpecification framework failed to locate data store \"\(DataFileName)\"" )
             return nil
         }
         
         do {
             let options = [ NSReadOnlyPersistentStoreOption : true ]
-            try persistentStoreCoordinator.addPersistentStoreWithType( NSSQLiteStoreType, configuration: nil, URL: databaseURL, options: options )
+            try persistentStoreCoordinator.addPersistentStore( ofType: NSSQLiteStoreType, configurationName: nil, at: databaseURL, options: options )
         }
         catch {
-            print( error )
+            Swift.print( error )
             return nil
         }
         
-        let concurrencyType = NSManagedObjectContextConcurrencyType.PrivateQueueConcurrencyType
+        let concurrencyType = NSManagedObjectContextConcurrencyType.privateQueueConcurrencyType
         let managedObjectContext = NSManagedObjectContext( concurrencyType: concurrencyType )
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
         
@@ -62,7 +62,7 @@ public class HIDSpecification: NSObject {
     // MARK: Private methods
     
     /*==========================================================================*/
-    private static func propertyForUsagePage( usagePage: Int, usage: Int?, key: String ) -> AnyObject? {
+    fileprivate static func propertyForUsagePage( _ usagePage: Int, usage: Int?, key: String ) -> AnyObject? {
         
         guard let managedObjectContext = HIDSpecification.managedObjectContext else { return nil }
         
@@ -80,25 +80,29 @@ public class HIDSpecification: NSObject {
             entityName = UsagePageEntityName
         }
         
-        var localError: ErrorType? = nil
+        var localError: NSError? = nil
         
-        managedObjectContext.performBlockAndWait {
+        managedObjectContext.performAndWait {
             
-            let fetchRequest = NSFetchRequest()
-            fetchRequest.entity = NSEntityDescription.entityForName( entityName, inManagedObjectContext: managedObjectContext )
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            fetchRequest.entity = NSEntityDescription.entity( forEntityName: entityName, in: managedObjectContext )
             fetchRequest.predicate = predicate
             fetchRequest.fetchLimit = 1
             
             do {
-                propertyValue = try managedObjectContext.executeFetchRequest( fetchRequest ).first?.valueForKey( key )
+                
+                let fetchResult = try managedObjectContext.fetch( fetchRequest )
+                if let firstResult = fetchResult.first as? NSManagedObject {
+                    propertyValue = firstResult.value( forKey: key ) as AnyObject?
+                }
             }
             catch {
-                localError = error
+                localError = error as NSError
             }
         }
         
         guard localError == nil else {
-            print( localError )
+            Swift.print( localError! )
             return nil
         }
         
@@ -106,7 +110,7 @@ public class HIDSpecification: NSObject {
     }
     
     /*==========================================================================*/
-    private static func namePropertyForUsagePage( usagePage: Int, usage: Int? ) -> String? {
+    fileprivate static func namePropertyForUsagePage( _ usagePage: Int, usage: Int? ) -> String? {
         
         if let standardName = HIDSpecification.propertyForUsagePage( usagePage, usage: usage, key: UsageNameKey ) as? String {
             return standardName
@@ -115,23 +119,23 @@ public class HIDSpecification: NSObject {
         guard let usage = usage else { return nil }
         guard let nameFormat = HIDSpecification.propertyForUsagePage( usagePage, usage: nil, key: UsageNameFormatKey ) else { return nil }
         
-        return ( nameFormat.stringByReplacingOccurrencesOfString( UsagePlaceholder, withString: "\(usage)" ) )
+        return ( nameFormat.replacingOccurrences( of: UsagePlaceholder, with: "\(usage)" ) )
     }
 
     // MARK: - Public methods
     
     /*==========================================================================*/
-    public static func nameForUsagePage( usagePage: Int, usage: Int ) -> String? {
+    open static func nameForUsagePage( _ usagePage: Int, usage: Int ) -> String? {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: usage ) )
     }
     
     /*==========================================================================*/
-    public static func nameForUsagePage( usagePage: Int ) -> String? {
+    open static func nameForUsagePage( _ usagePage: Int ) -> String? {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: nil ) )
     }
     
     /*==========================================================================*/
-    public static func isStandardUsagePage( usagePage: Int, usage: Int ) -> Bool {
+    open static func isStandardUsagePage( _ usagePage: Int, usage: Int ) -> Bool {
         
         guard usagePage != 0 && usage != 0 else {
             return false

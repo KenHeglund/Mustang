@@ -14,18 +14,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     /*==========================================================================*/
     override func awakeFromNib() {
-        NSValueTransformer.setValueTransformer( EqualsOneToBoolTransformer(), forName: "EqualsOneToBoolTransformer" )
-        NSValueTransformer.setValueTransformer( EqualsOneToTextColorTransformer(), forName: "EqualsOneToTextColorTransformer" )
-        NSValueTransformer.setValueTransformer( IsNotZeroTransformer(), forName: "IsNotZeroTransformer" )
+        ValueTransformer.setValueTransformer( EqualsOneToBoolTransformer(), forName: .equalsOneToBoolTransformerName )
+        ValueTransformer.setValueTransformer( EqualsOneToTextColorTransformer(), forName: .equalsOneToTextColorTransformerName )
+        ValueTransformer.setValueTransformer( IsNotZeroTransformer(), forName: .isNotZeroTransformerName )
     }
     
     /*==========================================================================*/
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
     }
     
     /*==========================================================================*/
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
     
