@@ -38,7 +38,7 @@ private let MustangDocument_CollectionTypeNames = [ "None", "Application", "Name
 
 class MustangDocument: NSPersistentDocument {
     
-    private static let sqliteOptions = [
+    fileprivate static let sqliteOptions = [
         
         // These allow automatic migration
         NSMigratePersistentStoresAutomaticallyOption : true,
@@ -46,7 +46,7 @@ class MustangDocument: NSPersistentDocument {
         
         // This avoids adding -shm and -wal files alongside the sqlite file.  Those files are associated with a journaling mode that is billed as having better performance.  If documents can be written to a bundle (such that they appear as a single item in the Finder to the user), then this option should probably be omitted and the default journaling mode used.
         NSSQLitePragmasOption : [ "journal_mode" : "DELETE" ],
-    ]
+    ] as [String : Any]
 
     
     /*==========================================================================*/
@@ -55,7 +55,7 @@ class MustangDocument: NSPersistentDocument {
         super.init()
         
         let persistentStoreCoordinator = self.managedObjectContext?.persistentStoreCoordinator
-        let managedObjectContext = NSManagedObjectContext( concurrencyType: .MainQueueConcurrencyType )
+        let managedObjectContext = NSManagedObjectContext( concurrencyType: .mainQueueConcurrencyType )
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
         
         self.managedObjectContext = managedObjectContext
@@ -68,17 +68,17 @@ class MustangDocument: NSPersistentDocument {
     override class func initialize() {
         
         let usagePageDescriptor = NSSortDescriptor( key: MustangDocument_DefaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
-        let usagePageData = NSKeyedArchiver.archivedDataWithRootObject( [usagePageDescriptor] )
+        let usagePageData = NSKeyedArchiver.archivedData( withRootObject: [usagePageDescriptor] )
         
         let usageDescriptor = NSSortDescriptor( key: MustangDocument_DefaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
-        let usageData = NSKeyedArchiver.archivedDataWithRootObject( [usageDescriptor] )
+        let usageData = NSKeyedArchiver.archivedData( withRootObject: [usageDescriptor] )
         
         let defaultDict = [
             MustangDocument_UsagePageTableSortDescriptorKey : usagePageData,
             MustangDocument_UsageTableSortDescriptorKey : usageData,
         ]
         
-        NSUserDefaults.standardUserDefaults().registerDefaults( defaultDict )
+        UserDefaults.standard.register( defaults: defaultDict )
     }
     
     
@@ -93,14 +93,16 @@ class MustangDocument: NSPersistentDocument {
     override func makeWindowControllers() {
         
         let storyboard = NSStoryboard( name: "Main", bundle: nil )
-        let windowController = storyboard.instantiateControllerWithIdentifier( "MustangDocument Window Controller" ) as! NSWindowController
+        let windowController = storyboard.instantiateController( withIdentifier: "MustangDocument Window Controller" ) as! NSWindowController
         self.addWindowController( windowController )
         
         windowController.contentViewController?.representedObject = self.managedObjectContext
     }
     
     /*==========================================================================*/
-    override func willPresentError( error: NSError ) -> NSError {
+    override func willPresentError( _ originalError: Error ) -> Error {
+        
+        let error = originalError as NSError
         
         if error.domain != NSCocoaErrorDomain {
             return error
@@ -132,24 +134,24 @@ class MustangDocument: NSPersistentDocument {
     // MARK: - NSPersistentDocument overrides
     
     /*==========================================================================*/
-    override func configurePersistentStoreCoordinatorForURL( url: NSURL, ofType fileType: String, modelConfiguration configuration: String?, storeOptions: [String : AnyObject]? ) throws {
+    override func configurePersistentStoreCoordinator( for url: URL, ofType fileType: String, modelConfiguration configuration: String?, storeOptions: [String : Any]? ) throws {
         
         let options = MustangDocument.sqliteOptions
         
         let persistentStoreCoordinator = self.managedObjectContext?.persistentStoreCoordinator
-        try persistentStoreCoordinator?.addPersistentStoreWithType( fileType, configuration: configuration, URL: url, options: options )
+        try persistentStoreCoordinator?.addPersistentStore( ofType: fileType, configurationName: configuration, at: url, options: options )
     }
     
     /*==========================================================================*/
-    override func writeToURL( absoluteURL: NSURL, ofType typeName: String, forSaveOperation saveOperation: NSSaveOperationType, originalContentsURL absoluteOriginalContentsURL: NSURL? ) throws {
+    override func write( to absoluteURL: URL, ofType typeName: String, for saveOperation: NSSaveOperationType, originalContentsURL absoluteOriginalContentsURL: URL? ) throws {
         
         // Handle only the case where a SaveAs is being performed and an existing URL is present, defer to the superclass for everything else.
         
-        guard saveOperation == NSSaveOperationType.SaveAsOperation else {
-            return try super.writeToURL( absoluteURL, ofType: typeName, forSaveOperation: saveOperation, originalContentsURL: absoluteOriginalContentsURL )
+        guard saveOperation == NSSaveOperationType.saveAsOperation else {
+            return try super.write( to: absoluteURL, ofType: typeName, for: saveOperation, originalContentsURL: absoluteOriginalContentsURL )
         }
         guard let originalContentURL = absoluteOriginalContentsURL else {
-            return try super.writeToURL( absoluteURL, ofType: typeName, forSaveOperation: saveOperation, originalContentsURL: absoluteOriginalContentsURL )
+            return try super.write( to: absoluteURL, ofType: typeName, for: saveOperation, originalContentsURL: absoluteOriginalContentsURL )
         }
         
         guard let managedObjectContext = self.managedObjectContext else {
@@ -158,19 +160,19 @@ class MustangDocument: NSPersistentDocument {
         guard let persistentStoreCoordinator = managedObjectContext.persistentStoreCoordinator else {
             fatalError( "failed to load persistent store coordinator" )
         }
-        guard let originalPersistentStore = persistentStoreCoordinator.persistentStoreForURL( originalContentURL ) else {
+        guard let originalPersistentStore = persistentStoreCoordinator.persistentStore( for: originalContentURL ) else {
             fatalError( "failed to retrieve persistent store" )
         }
         
         let options = MustangDocument.sqliteOptions
         
-        try persistentStoreCoordinator.migratePersistentStore( originalPersistentStore, toURL: absoluteURL, options: options, withType: typeName )
+        try persistentStoreCoordinator.migratePersistentStore( originalPersistentStore, to: absoluteURL, options: options, withType: typeName )
         
         do {
             try managedObjectContext.save()
         }
         catch {
-            print( error )
+            Swift.print( error )
         }
     }
 
@@ -178,7 +180,7 @@ class MustangDocument: NSPersistentDocument {
     // MARK: - IBAction implementation
     
     /*==========================================================================*/
-    @IBAction func doImport( sender: AnyObject ) {
+    @IBAction func doImport( _ sender: AnyObject ) {
         
         guard let window = self.windowForSheet else { return }
         
@@ -187,17 +189,17 @@ class MustangDocument: NSPersistentDocument {
         openPanel.allowsMultipleSelection = false
         openPanel.allowedFileTypes = [ "plist" ]
         
-        openPanel.beginSheetModalForWindow( window ) { ( result: Int ) in
+        openPanel.beginSheetModal( for: window ) { ( result: Int ) in
             
             guard result == NSFileHandlingPanelOKButton else { return }
-            guard let url = openPanel.URLs.first else { return }
+            guard let url = openPanel.urls.first else { return }
             
             self.importFromURL( url )
         }
     }
     
     /*==========================================================================*/
-    @IBAction func doExport( sender: AnyObject ) {
+    @IBAction func doExport( _ sender: AnyObject ) {
         
         guard let window = self.windowForSheet else { return }
         
@@ -206,10 +208,10 @@ class MustangDocument: NSPersistentDocument {
         savePanel.canSelectHiddenExtension = true
         savePanel.allowedFileTypes = [ "plist" ]
         
-        savePanel.beginSheetModalForWindow( window ) { ( result: Int ) in
+        savePanel.beginSheetModal( for: window ) { ( result: Int ) in
             
             guard result == NSFileHandlingPanelOKButton else { return }
-            guard let url = savePanel.URL else { return }
+            guard let url = savePanel.url else { return }
             
             self.exportToURL( url )
         }
@@ -219,41 +221,41 @@ class MustangDocument: NSPersistentDocument {
     // MARK: - MustangDocument internal
     
     /*==========================================================================*/
-    private func importFromURL( URL: NSURL ) {
+    fileprivate func importFromURL( _ URL: Foundation.URL ) {
         
         guard let managedObjectContext = self.managedObjectContext else {
             fatalError( "failed to obtain managed object context" )
         }
         
-        guard let hidDictionary = NSDictionary( contentsOfURL: URL ) else {
-            print( "\(URL) does not contain an archived dictionary" )
+        guard let hidDictionary = NSDictionary( contentsOf: URL ) else {
+            Swift.print( "\(URL) does not contain an archived dictionary" )
             return
         }
         
         guard let usagePagesDict = hidDictionary[HIDManagerUsagePagesKey] as? [String:[String:AnyObject]] else {
-            print( "Archived dictionary does not contain a '\(HIDManagerUsagePagesKey)' value at its root" )
+            Swift.print( "Archived dictionary does not contain a '\(HIDManagerUsagePagesKey)' value at its root" )
             return
         }
         
-        managedObjectContext.performBlockAndWait { 
+        managedObjectContext.performAndWait { 
             
             for ( usagePageKey, usagePageDict ) in usagePagesDict {
                 
-                let pageScanner = NSScanner( string: usagePageKey )
+                let pageScanner = Scanner( string: usagePageKey )
                 var usagePage: UInt32 = 0
-                guard pageScanner.scanHexInt( &usagePage ) else {
-                    print( "Usage page key '\(usagePageKey) does not contain a hex value" )
+                guard pageScanner.scanHexInt32( &usagePage ) else {
+                    Swift.print( "Usage page key '\(usagePageKey) does not contain a hex value" )
                     continue
                 }
                 
                 guard let usagePageName = usagePageDict[HIDManagerUsagePageNameKey] as? String else {
-                    print( "Dictionary for usage page '\(usagePageKey) does not contain a '\(HIDManagerUsagePageNameKey)' value" )
+                    Swift.print( "Dictionary for usage page '\(usagePageKey) does not contain a '\(HIDManagerUsagePageNameKey)' value" )
                     continue
                 }
                 
                 let usageNameFormat = usagePageDict[HIDManagerUsageNameFormatKey] as? String
                 
-                let newUsagePage = NSEntityDescription.insertNewObjectForEntityForName( UsagePageEntity_EntityName, inManagedObjectContext: managedObjectContext )
+                let newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntity_EntityName, into: managedObjectContext )
                 newUsagePage.setValue( Int(usagePage), forKey: UsagePageEntity_UsagePageKey )
                 newUsagePage.setValue( usagePageName, forKey: UsagePageEntity_NameKey )
                 newUsagePage.setValue( usageNameFormat, forKey: UsagePageEntity_UsageNameFormatKey )
@@ -262,22 +264,22 @@ class MustangDocument: NSPersistentDocument {
                 
                 for ( usageKey, usageDict ) in usagesDict {
                     
-                    let usageScanner = NSScanner( string: usageKey )
+                    let usageScanner = Scanner( string: usageKey )
                     var usage: UInt32 = 0
-                    if usageScanner.scanHexInt( &usage ) == false { continue }
+                    if usageScanner.scanHexInt32( &usage ) == false { continue }
                     
                     guard let usageName = usageDict[HIDManagerUsageNameKey] as? String else {
-                        print( "Dictionary for usage '\(usagePageKey):\(usageKey) does not contain a '\(HIDManagerUsageNameKey)' value" )
+                        Swift.print( "Dictionary for usage '\(usagePageKey):\(usageKey) does not contain a '\(HIDManagerUsageNameKey)' value" )
                         continue
                     }
                     
-                    let newUsage = NSEntityDescription.insertNewObjectForEntityForName( UsageEntity_EntityName, inManagedObjectContext: managedObjectContext )
+                    let newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntity_EntityName, into: managedObjectContext )
                     newUsage.setValue( newUsagePage, forKey: UsageEntity_UsagePageKey )
                     newUsage.setValue( Int(usage), forKey: UsageEntity_UsageKey )
                     newUsage.setValue( usageName, forKey: UsageEntity_NameKey )
                     
                     if let collectionType = usageDict[HIDManagerCollectionTypeKey] as? String {
-                        newUsage.setValue( MustangDocument_CollectionTypeNames.indexOf( collectionType ), forKey: UsageEntity_CollectionTypeKey )
+                        newUsage.setValue( MustangDocument_CollectionTypeNames.index( of: collectionType ), forKey: UsageEntity_CollectionTypeKey )
                     }
                 }
             }
@@ -285,59 +287,59 @@ class MustangDocument: NSPersistentDocument {
     }
     
     /*==========================================================================*/
-    private func exportToURL( URL: NSURL ) {
+    fileprivate func exportToURL( _ URL: Foundation.URL ) {
         
         guard let managedObjectContext = self.managedObjectContext else {
             fatalError( "failed to obtain managed object context" )
         }
         
-        var localError: ErrorType? = nil
+        var localError: NSError? = nil
         
         let rootDictionary = NSMutableDictionary()
         let usagePagesDict = NSMutableDictionary()
         rootDictionary[HIDManagerUsagePagesKey] = usagePagesDict
         
-        managedObjectContext.performBlockAndWait {
+        managedObjectContext.performAndWait {
             
-            let usagePageRequest = NSFetchRequest()
-            usagePageRequest.entity = NSEntityDescription.entityForName( UsagePageEntity_EntityName, inManagedObjectContext: managedObjectContext )
+            let usagePageRequest = NSFetchRequest<NSFetchRequestResult>()
+            usagePageRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntity_EntityName, in: managedObjectContext )
             
             do {
                 
-                let usagePageResult = try managedObjectContext.executeFetchRequest( usagePageRequest )
+                let usagePageResult = try managedObjectContext.fetch( usagePageRequest )
                 
                 for usagePageEntity in usagePageResult  {
                     
-                    let usagePage = usagePageEntity.valueForKey( UsagePageEntity_UsagePageKey ) as! Int
+                    let usagePage = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as! Int
                     
                     let usagePageDict = NSMutableDictionary()
                     let usagePageKey = String( format: "0x%04lX", usagePage )
                     usagePagesDict[usagePageKey] = usagePageDict
                     
-                    let usagePageName = usagePageEntity.valueForKey( UsagePageEntity_NameKey ) as! String
+                    let usagePageName = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_NameKey ) as! String
                     usagePageDict[HIDManagerUsagePageNameKey] = usagePageName
                     
-                    if let usageNameFormat = usagePageEntity.valueForKey( UsagePageEntity_UsageNameFormatKey ) {
+                    if let usageNameFormat = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_UsageNameFormatKey ) {
                         usagePageDict[HIDManagerUsageNameFormatKey] = usageNameFormat
                     }
                     
                     let usagesDict = NSMutableDictionary()
                     usagePageDict[HIDManagerUsagesKey] = usagesDict
                     
-                    guard let usageEntities = usagePageEntity.valueForKey( UsagePageEntity_UsagesKey ) as? NSSet else { continue }
+                    guard let usageEntities = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_UsagesKey ) as? NSSet else { continue }
                     
                     for usageEntity in usageEntities {
                         
-                        let usage = usageEntity.valueForKey( UsageEntity_UsageKey ) as! Int
+                        let usage = (usageEntity as AnyObject).value( forKey: UsageEntity_UsageKey ) as! Int
                         
                         let usageDict = NSMutableDictionary()
                         let usageKey = String( format: "0x%04lX", usage )
                         usagesDict[usageKey] = usageDict
                         
-                        let usageName = usageEntity.valueForKey( UsageEntity_NameKey )
+                        let usageName = (usageEntity as AnyObject).value( forKey: UsageEntity_NameKey )
                         usageDict[HIDManagerUsageNameKey] = usageName
                         
-                        if let collectionType = usageEntity.valueForKey( UsageEntity_CollectionTypeKey ) as? Int {
+                        if let collectionType = (usageEntity as AnyObject).value( forKey: UsageEntity_CollectionTypeKey ) as? Int {
                             
                             if collectionType > 0 {
                                 usageDict[HIDManagerCollectionTypeKey] = MustangDocument_CollectionTypeNames[collectionType]
@@ -348,26 +350,26 @@ class MustangDocument: NSPersistentDocument {
                 
             }
             catch {
-                localError = error
+                localError = error as NSError
             }
         }
         
         guard localError == nil else {
-            print( localError )
+            Swift.print( localError! )
             return
         }
         
         do {
-            let rootData = try NSPropertyListSerialization.dataWithPropertyList( rootDictionary, format: .BinaryFormat_v1_0, options: 0 )
-            rootData.writeToURL( URL, atomically: true )
+            let rootData = try PropertyListSerialization.data( fromPropertyList: rootDictionary, format: .binary, options: 0 )
+            try? rootData.write( to: URL, options: [.atomic] )
         }
         catch {
-            print( error )
+            Swift.print( error )
         }
     }
     
     /*==========================================================================*/
-    private func errorStringForErrors( errors: [NSError] ) -> String {
+    fileprivate func errorStringForErrors( _ errors: [NSError] ) -> String {
         
         let maxDisplayErrorCount = 5
         let totalErrorCount = errors.count
@@ -381,11 +383,11 @@ class MustangDocument: NSPersistentDocument {
         for error in errors[0..<displayErrorCount] {
             
             if let validationObject = error.userInfo[NSValidationObjectErrorKey] {
-                if let usagePage = validationObject.valueForKey( UsagePageEntity_UsagePageKey ) as? Int {
+                if let usagePage = (validationObject as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as? Int {
                     // Only a UsagePageEntity has a usagePage property as an Int
                     errorString += "Usage Page \(usagePage): "
                 }
-                else if let usage = validationObject.valueForKey( UsageEntity_UsageKey ) as? Int {
+                else if let usage = (validationObject as AnyObject).value( forKey: UsageEntity_UsageKey ) as? Int {
                     // Only a UsageEntity has a usage property as an Int
                     errorString += "Usage \(usage): "
                 }

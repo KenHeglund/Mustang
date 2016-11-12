@@ -17,7 +17,7 @@ class UsageTableDelegate: NSObject {
     // MARK: - IBAction implementation
     
     /*==========================================================================*/
-    @IBAction func doChangeControl( sender: AnyObject ) {
+    @IBAction func doChangeControl( _ sender: AnyObject ) {
         
         guard let tableView = sender as? NSTableView else { return }
         guard let arrangedObjects = self.usageArrayController?.arrangedObjects as? NSArray else { return }
@@ -26,11 +26,11 @@ class UsageTableDelegate: NSObject {
         guard let key = tableView.tableColumns[clickedColumn].sortDescriptorPrototype?.key else { return }
         
         let clickedRow = tableView.clickedRow
-        let newValue = arrangedObjects[clickedRow].valueForKey( key )
+        let newValue = (arrangedObjects[clickedRow] as AnyObject).value( forKey: key )
         
-        let selectedObjects = arrangedObjects.objectsAtIndexes( tableView.selectedRowIndexes )
+        let selectedObjects = arrangedObjects.objects( at: tableView.selectedRowIndexes )
         for object in selectedObjects {
-            object.setValue( newValue, forKey: key )
+            (object as AnyObject).setValue( newValue, forKey: key )
         }
         
         self.inhibitSelectionChange = true
@@ -39,11 +39,11 @@ class UsageTableDelegate: NSObject {
     // MARK: - UsageTableDelegate implementation
     
     /*==========================================================================*/
-    func selectionShouldChangeInTableView( tableView: NSTableView ) -> Bool {
+    func selectionShouldChangeInTableView( _ tableView: NSTableView ) -> Bool {
         
         // After changing a cell in an NSTableView, a delayed message is sent to the table to change its selection to just the row containing the edited cell.  The following code defeats that selection change and allows all rows that were selected at the time of the value change to remain selected thereafter.  A table's selection belongs to the user, not AppKit.
         
-        if NSRunLoop.currentRunLoop().currentMode == nil {
+        if RunLoop.current.currentMode == nil {
             return true
         }
         

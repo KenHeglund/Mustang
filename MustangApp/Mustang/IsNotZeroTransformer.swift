@@ -8,7 +8,7 @@ import Cocoa
 
 /*==========================================================================*/
 
-class IsNotZeroTransformer: NSValueTransformer {
+class IsNotZeroTransformer: ValueTransformer {
     
     // MARK: - NSValueTransformer overrides
     
@@ -18,8 +18,13 @@ class IsNotZeroTransformer: NSValueTransformer {
     }
     
     /*==========================================================================*/
-    override func transformedValue( value: AnyObject? ) -> AnyObject? {
+    override func transformedValue( _ value: Any? ) -> Any? {
         guard let intValue = value as? Int else { return false }
         return intValue != 0
     }
+}
+
+/*==========================================================================*/
+extension NSValueTransformerName {
+    public static let isNotZeroTransformerName = NSValueTransformerName( rawValue: "IsNotZeroTransformer" )
 }

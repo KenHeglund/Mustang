@@ -8,7 +8,7 @@ import Cocoa
 
 /*==========================================================================*/
 
-class EqualsOneToTextColorTransformer: NSValueTransformer {
+class EqualsOneToTextColorTransformer: ValueTransformer {
     
     // MARK : - NSValueTransformer overrides
     
@@ -18,8 +18,13 @@ class EqualsOneToTextColorTransformer: NSValueTransformer {
     }
     
     /*==========================================================================*/
-    override func transformedValue( value: AnyObject? ) -> AnyObject? {
-        guard let intValue = value as? Int else { return NSColor.disabledControlTextColor() }
-        return ( intValue == 1 ? NSColor.controlTextColor() : NSColor.disabledControlTextColor() )
+    override func transformedValue( _ value: Any? ) -> Any? {
+        guard let intValue = value as? Int else { return NSColor.disabledControlTextColor }
+        return ( intValue == 1 ? NSColor.controlTextColor : NSColor.disabledControlTextColor )
     }
+}
+
+/*==========================================================================*/
+extension NSValueTransformerName {
+    public static let equalsOneToTextColorTransformerName = NSValueTransformerName( rawValue: "EqualsOneToTextColorTransformer" )
 }

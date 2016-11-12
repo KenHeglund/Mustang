@@ -27,7 +27,7 @@ class ViewController: NSViewController {
     // MARK: - ViewController implementation
     
     /*==========================================================================*/
-    @IBAction func doAddUsagePage( sender: AnyObject? ) {
+    @IBAction func doAddUsagePage( _ sender: AnyObject? ) {
         
         guard let managedObjectContext = self.managedObjectContext else {
             fatalError( "Failed to obtain managed object context" )
@@ -36,8 +36,8 @@ class ViewController: NSViewController {
         
         var newUsagePage: NSManagedObject! = nil
         
-        managedObjectContext.performBlockAndWait { 
-            newUsagePage = NSEntityDescription.insertNewObjectForEntityForName( UsagePageEntity_EntityName, inManagedObjectContext: managedObjectContext )
+        managedObjectContext.performAndWait { 
+            newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntity_EntityName, into: managedObjectContext )
             newUsagePage.setValue( nextUsagePageID, forKey: UsagePageEntity_UsagePageKey )
             newUsagePage.setValue( "New Usage Page \(nextUsagePageID)", forKey: UsagePageEntity_NameKey )
         }
@@ -49,12 +49,12 @@ class ViewController: NSViewController {
         let selectedRow = self.usagePageArrayController.selectionIndex
         self.usagePageTableView.scrollRowToVisible( selectedRow )
         
-        let columnIndex = self.usagePageTableView.columnWithIdentifier( ViewController_ColumnKey_Name )
-        self.usagePageTableView.editColumn( columnIndex, row: selectedRow, withEvent: nil, select: true )
+        let columnIndex = self.usagePageTableView.column( withIdentifier: ViewController_ColumnKey_Name )
+        self.usagePageTableView.editColumn( columnIndex, row: selectedRow, with: nil, select: true )
     }
     
     /*==========================================================================*/
-    @IBAction func doAddUsage( sender: AnyObject? ) {
+    @IBAction func doAddUsage( _ sender: AnyObject? ) {
         
         guard let managedObjectContext = self.managedObjectContext else {
             fatalError( "Failed to obtain managed object context" )
@@ -62,8 +62,8 @@ class ViewController: NSViewController {
         guard let nextUsageID = self.nextUsageID() else { return }
         
         var newUsage:NSManagedObject! = nil
-        managedObjectContext.performBlockAndWait { 
-            newUsage = NSEntityDescription.insertNewObjectForEntityForName( UsageEntity_EntityName, inManagedObjectContext: managedObjectContext )
+        managedObjectContext.performAndWait { 
+            newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntity_EntityName, into: managedObjectContext )
             newUsage.setValue( nextUsageID, forKey: UsageEntity_UsageKey )
             newUsage.setValue( "New Usage \(nextUsageID)", forKey: UsageEntity_NameKey )
         }
@@ -75,12 +75,12 @@ class ViewController: NSViewController {
         let selectedRow = self.usageArrayController.selectionIndex
         self.usageTableView.scrollRowToVisible( selectedRow )
         
-        let columnIndex = self.usageTableView.columnWithIdentifier( ViewController_ColumnKey_Name )
-        self.usageTableView.editColumn( columnIndex, row: selectedRow, withEvent: nil, select: true )
+        let columnIndex = self.usageTableView.column( withIdentifier: ViewController_ColumnKey_Name )
+        self.usageTableView.editColumn( columnIndex, row: selectedRow, with: nil, select: true )
     }
     
     /*==========================================================================*/
-    @IBAction func doAddUsagePageOrUsage( sender: AnyObject? ) {
+    @IBAction func doAddUsagePageOrUsage( _ sender: AnyObject? ) {
         
         guard let firstResponder = self.view.window?.firstResponder else { return }
         
@@ -96,7 +96,7 @@ class ViewController: NSViewController {
     // MARK: - MustangDocument internal
     
     /*==========================================================================*/
-    private func nextUsagePageID() -> Int? {
+    fileprivate func nextUsagePageID() -> Int? {
         
         guard let managedObjectContext = self.managedObjectContext else {
             fatalError( "Failed to obtain managed object context" )
@@ -104,30 +104,30 @@ class ViewController: NSViewController {
         
         var nextUsagePageID = 1
         
-        var localError: ErrorType? = nil
+        var localError: NSError? = nil
         
-        managedObjectContext.performBlockAndWait {
+        managedObjectContext.performAndWait {
             
             let sortDescriptor = NSSortDescriptor( key: UsagePageEntity_UsagePageKey, ascending: false )
             
-            let fetchRequest = NSFetchRequest()
-            fetchRequest.entity = NSEntityDescription.entityForName( UsagePageEntity_EntityName, inManagedObjectContext: managedObjectContext )
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntity_EntityName, in: managedObjectContext )
             fetchRequest.sortDescriptors = [ sortDescriptor ]
             fetchRequest.fetchLimit = 1
             
             do {
-                let fetchResults = try managedObjectContext.executeFetchRequest( fetchRequest )
-                let lastUsagePageID = fetchResults.last?.valueForKey( UsagePageEntity_UsagePageKey ) as? Int ?? 0
+                let fetchResults = try managedObjectContext.fetch( fetchRequest )
+                let lastUsagePageID = (fetchResults.last as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as? Int ?? 0
                 
                 nextUsagePageID = ( lastUsagePageID + 1 )
             }
             catch {
-                localError = error
+                localError = error as NSError?
             }
         }
         
         guard localError == nil else {
-            print( localError )
+            Swift.print( localError! )
             return nil
         }
         
@@ -135,7 +135,7 @@ class ViewController: NSViewController {
     }
     
     /*==========================================================================*/
-    private func nextUsageID()-> Int? {
+    fileprivate func nextUsageID()-> Int? {
         
         guard let managedObjectContext = self.managedObjectContext else {
             fatalError( "Failed to obtain managed object context" )
@@ -145,35 +145,35 @@ class ViewController: NSViewController {
         
         var nextUsageID = 1
         
-        var localError: ErrorType? = nil
+        var localError: NSError? = nil
         
         let selectedUsagePage = selectedObjects.last
-        guard let usagePage = selectedUsagePage?.valueForKey( UsagePageEntity_UsagePageKey ) as? Int else { return nextUsageID }
+        guard let usagePage = (selectedUsagePage as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as? Int else { return nextUsageID }
         
         let predicate = NSPredicate( format: "usagePage.usagePage == %ld", usagePage )
         let sortDescriptor = NSSortDescriptor( key: UsageEntity_UsageKey, ascending: false )
         
-        managedObjectContext.performBlockAndWait {
+        managedObjectContext.performAndWait {
             
-            let fetchRequest = NSFetchRequest()
-            fetchRequest.entity = NSEntityDescription.entityForName( UsageEntity_EntityName, inManagedObjectContext: managedObjectContext )
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsageEntity_EntityName, in: managedObjectContext )
             fetchRequest.predicate = predicate
             fetchRequest.sortDescriptors = [ sortDescriptor ]
             fetchRequest.fetchLimit = 1
             
             do {
-                let fetchResult = try managedObjectContext.executeFetchRequest( fetchRequest )
-                let lastUsageID = fetchResult.last?.valueForKey( UsageEntity_UsageKey ) as? Int ?? 0
+                let fetchResult = try managedObjectContext.fetch( fetchRequest )
+                let lastUsageID = (fetchResult.last as AnyObject).value( forKey: UsageEntity_UsageKey ) as? Int ?? 0
                 
                 nextUsageID = ( lastUsageID + 1 )
             }
             catch {
-                localError = error
+                localError = error as NSError
             }
         }
         
         guard localError == nil else {
-            print( localError )
+            Swift.print( localError! )
             return nil
         }
         

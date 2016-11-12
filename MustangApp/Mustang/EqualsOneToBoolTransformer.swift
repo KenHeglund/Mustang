@@ -8,7 +8,7 @@ import Cocoa
 
 /*==========================================================================*/
 
-class EqualsOneToBoolTransformer: NSValueTransformer {
+class EqualsOneToBoolTransformer: ValueTransformer {
     
     // MARK: - NSValueTransformer overrides
     
@@ -18,8 +18,13 @@ class EqualsOneToBoolTransformer: NSValueTransformer {
     }
     
     /*==========================================================================*/
-    override func transformedValue( value: AnyObject? ) -> AnyObject? {
+    override func transformedValue( _ value: Any? ) -> Any? {
         guard let intValue = value as? Int else { return false }
         return intValue == 1
     }
+}
+
+/*==========================================================================*/
+extension NSValueTransformerName {
+    public static let equalsOneToBoolTransformerName = NSValueTransformerName( rawValue: "EqualsOneToBoolTransformer" )
 }
