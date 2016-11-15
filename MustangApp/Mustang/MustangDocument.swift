@@ -8,35 +8,41 @@ import Cocoa
 
 /*==========================================================================*/
 
-let UsagePageEntity_EntityName = "UsagePageEntity"
-let UsagePageEntity_UsagePageKey = "usagePage"
-let UsagePageEntity_NameKey = "name"
-let UsagePageEntity_UsageNameFormatKey = "usageNameFormat"
-let UsagePageEntity_UsagesKey = "usages"
+struct UsagePageEntity {
+    static let entityName = "UsagePageEntity"
+    static let usagePageKey = "usagePage"
+    static let nameKey = "name"
+    static let usageNameFormatKey = "usageNameFormat"
+    static let usagesKey = "usages"
+}
 
-let UsageEntity_EntityName = "UsageEntity"
-let UsageEntity_UsageKey = "usage"
-let UsageEntity_NameKey = "name"
-let UsageEntity_UsagePageKey = "usagePage"
-let UsageEntity_CollectionTypeKey = "collectionType"
+struct UsageEntity {
+    static let entityName = "UsageEntity"
+    static let usageKey = "usage"
+    static let nameKey = "name"
+    static let usagePageKey = "usagePage"
+    static let collectionTypeKey = "collectionType"
+}
 
-private let HIDManagerUsagePagesKey = "UsagePages"
-private let HIDManagerUsagePageNameKey = "PageName"
-private let HIDManagerUsagesKey = "Usages"
-private let HIDManagerUsageNameKey = "UsageName"
-private let HIDManagerUsageNameFormatKey = "UsageNameFormat"
-private let HIDManagerCollectionTypeKey = "Collection"
-
-private let MustangDocument_DefaultUsagePageTableSortKey = "usagePage"
-private let MustangDocument_DefaultUsageTableSortKey = "usage"
-private let MustangDocument_UsagePageTableSortDescriptorKey = "UsagePageTableSortDescriptors"
-private let MustangDocument_UsageTableSortDescriptorKey = "UsageTableSortDescriptors"
-
-private let MustangDocument_CollectionTypeNames = [ "None", "Application", "NamedArray", "Logical", "Physical" ]
+fileprivate struct HIDManager {
+    static let usagePagesKey = "UsagePages"
+    static let usagePageNameKey = "PageName"
+    static let usagesKey = "Usages"
+    static let usageNameKey = "UsageName"
+    static let usageNameFormatKey = "UsageNameFormat"
+    static let collectionTypeKey = "Collection"
+}
 
 /*==========================================================================*/
 
 class MustangDocument: NSPersistentDocument {
+    
+    private static let defaultUsagePageTableSortKey = "usagePage"
+    private static let defaultUsageTableSortKey = "usage"
+    private static let usagePageTableSortDescriptorKey = "UsagePageTableSortDescriptors"
+    private static let usageTableSortDescriptorKey = "UsageTableSortDescriptors"
+    
+    private static let collectionTypeNames = [ "None", "Application", "NamedArray", "Logical", "Physical" ]
     
     fileprivate static let sqliteOptions = [
         
@@ -67,15 +73,15 @@ class MustangDocument: NSPersistentDocument {
     /*==========================================================================*/
     override class func initialize() {
         
-        let usagePageDescriptor = NSSortDescriptor( key: MustangDocument_DefaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+        let usagePageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
         let usagePageData = NSKeyedArchiver.archivedData( withRootObject: [usagePageDescriptor] )
         
-        let usageDescriptor = NSSortDescriptor( key: MustangDocument_DefaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+        let usageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
         let usageData = NSKeyedArchiver.archivedData( withRootObject: [usageDescriptor] )
         
         let defaultDict = [
-            MustangDocument_UsagePageTableSortDescriptorKey : usagePageData,
-            MustangDocument_UsageTableSortDescriptorKey : usageData,
+            MustangDocument.usagePageTableSortDescriptorKey : usagePageData,
+            MustangDocument.usageTableSortDescriptorKey : usageData,
         ]
         
         UserDefaults.standard.register( defaults: defaultDict )
@@ -232,8 +238,8 @@ class MustangDocument: NSPersistentDocument {
             return
         }
         
-        guard let usagePagesDict = hidDictionary[HIDManagerUsagePagesKey] as? [String:[String:AnyObject]] else {
-            Swift.print( "Archived dictionary does not contain a '\(HIDManagerUsagePagesKey)' value at its root" )
+        guard let usagePagesDict = hidDictionary[HIDManager.usagePagesKey] as? [String:[String:AnyObject]] else {
+            Swift.print( "Archived dictionary does not contain a '\(HIDManager.usagePagesKey)' value at its root" )
             return
         }
         
@@ -248,19 +254,19 @@ class MustangDocument: NSPersistentDocument {
                     continue
                 }
                 
-                guard let usagePageName = usagePageDict[HIDManagerUsagePageNameKey] as? String else {
-                    Swift.print( "Dictionary for usage page '\(usagePageKey) does not contain a '\(HIDManagerUsagePageNameKey)' value" )
+                guard let usagePageName = usagePageDict[HIDManager.usagePageNameKey] as? String else {
+                    Swift.print( "Dictionary for usage page '\(usagePageKey) does not contain a '\(HIDManager.usagePageNameKey)' value" )
                     continue
                 }
                 
-                let usageNameFormat = usagePageDict[HIDManagerUsageNameFormatKey] as? String
+                let usageNameFormat = usagePageDict[HIDManager.usageNameFormatKey] as? String
                 
-                let newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntity_EntityName, into: managedObjectContext )
-                newUsagePage.setValue( Int(usagePage), forKey: UsagePageEntity_UsagePageKey )
-                newUsagePage.setValue( usagePageName, forKey: UsagePageEntity_NameKey )
-                newUsagePage.setValue( usageNameFormat, forKey: UsagePageEntity_UsageNameFormatKey )
+                let newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntity.entityName, into: managedObjectContext )
+                newUsagePage.setValue( Int(usagePage), forKey: UsagePageEntity.usagePageKey )
+                newUsagePage.setValue( usagePageName, forKey: UsagePageEntity.nameKey )
+                newUsagePage.setValue( usageNameFormat, forKey: UsagePageEntity.usageNameFormatKey )
                 
-                guard let usagesDict = usagePageDict[HIDManagerUsagesKey] as? [String:[String:AnyObject]] else { continue }
+                guard let usagesDict = usagePageDict[HIDManager.usagesKey] as? [String:[String:AnyObject]] else { continue }
                 
                 for ( usageKey, usageDict ) in usagesDict {
                     
@@ -268,18 +274,18 @@ class MustangDocument: NSPersistentDocument {
                     var usage: UInt32 = 0
                     if usageScanner.scanHexInt32( &usage ) == false { continue }
                     
-                    guard let usageName = usageDict[HIDManagerUsageNameKey] as? String else {
-                        Swift.print( "Dictionary for usage '\(usagePageKey):\(usageKey) does not contain a '\(HIDManagerUsageNameKey)' value" )
+                    guard let usageName = usageDict[HIDManager.usageNameKey] as? String else {
+                        Swift.print( "Dictionary for usage '\(usagePageKey):\(usageKey) does not contain a '\(HIDManager.usageNameKey)' value" )
                         continue
                     }
                     
-                    let newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntity_EntityName, into: managedObjectContext )
-                    newUsage.setValue( newUsagePage, forKey: UsageEntity_UsagePageKey )
-                    newUsage.setValue( Int(usage), forKey: UsageEntity_UsageKey )
-                    newUsage.setValue( usageName, forKey: UsageEntity_NameKey )
+                    let newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntity.entityName, into: managedObjectContext )
+                    newUsage.setValue( newUsagePage, forKey: UsageEntity.usagePageKey )
+                    newUsage.setValue( Int(usage), forKey: UsageEntity.usageKey )
+                    newUsage.setValue( usageName, forKey: UsageEntity.nameKey )
                     
-                    if let collectionType = usageDict[HIDManagerCollectionTypeKey] as? String {
-                        newUsage.setValue( MustangDocument_CollectionTypeNames.index( of: collectionType ), forKey: UsageEntity_CollectionTypeKey )
+                    if let collectionType = usageDict[HIDManager.collectionTypeKey] as? String {
+                        newUsage.setValue( MustangDocument.collectionTypeNames.index( of: collectionType ), forKey: UsageEntity.collectionTypeKey )
                     }
                 }
             }
@@ -297,12 +303,12 @@ class MustangDocument: NSPersistentDocument {
         
         let rootDictionary = NSMutableDictionary()
         let usagePagesDict = NSMutableDictionary()
-        rootDictionary[HIDManagerUsagePagesKey] = usagePagesDict
+        rootDictionary[HIDManager.usagePagesKey] = usagePagesDict
         
         managedObjectContext.performAndWait {
             
             let usagePageRequest = NSFetchRequest<NSFetchRequestResult>()
-            usagePageRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntity_EntityName, in: managedObjectContext )
+            usagePageRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntity.entityName, in: managedObjectContext )
             
             do {
                 
@@ -310,39 +316,39 @@ class MustangDocument: NSPersistentDocument {
                 
                 for usagePageEntity in usagePageResult  {
                     
-                    let usagePage = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as! Int
+                    let usagePage = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity.usagePageKey ) as! Int
                     
                     let usagePageDict = NSMutableDictionary()
                     let usagePageKey = String( format: "0x%04lX", usagePage )
                     usagePagesDict[usagePageKey] = usagePageDict
                     
-                    let usagePageName = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_NameKey ) as! String
-                    usagePageDict[HIDManagerUsagePageNameKey] = usagePageName
+                    let usagePageName = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity.nameKey ) as! String
+                    usagePageDict[HIDManager.usagePageNameKey] = usagePageName
                     
-                    if let usageNameFormat = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_UsageNameFormatKey ) {
-                        usagePageDict[HIDManagerUsageNameFormatKey] = usageNameFormat
+                    if let usageNameFormat = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity.usageNameFormatKey ) {
+                        usagePageDict[HIDManager.usageNameFormatKey] = usageNameFormat
                     }
                     
                     let usagesDict = NSMutableDictionary()
-                    usagePageDict[HIDManagerUsagesKey] = usagesDict
+                    usagePageDict[HIDManager.usagesKey] = usagesDict
                     
-                    guard let usageEntities = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity_UsagesKey ) as? NSSet else { continue }
+                    guard let usageEntities = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity.usagesKey ) as? NSSet else { continue }
                     
                     for usageEntity in usageEntities {
                         
-                        let usage = (usageEntity as AnyObject).value( forKey: UsageEntity_UsageKey ) as! Int
+                        let usage = (usageEntity as AnyObject).value( forKey: UsageEntity.usageKey ) as! Int
                         
                         let usageDict = NSMutableDictionary()
                         let usageKey = String( format: "0x%04lX", usage )
                         usagesDict[usageKey] = usageDict
                         
-                        let usageName = (usageEntity as AnyObject).value( forKey: UsageEntity_NameKey )
-                        usageDict[HIDManagerUsageNameKey] = usageName
+                        let usageName = (usageEntity as AnyObject).value( forKey: UsageEntity.nameKey )
+                        usageDict[HIDManager.usageNameKey] = usageName
                         
-                        if let collectionType = (usageEntity as AnyObject).value( forKey: UsageEntity_CollectionTypeKey ) as? Int {
+                        if let collectionType = (usageEntity as AnyObject).value( forKey: UsageEntity.collectionTypeKey ) as? Int {
                             
                             if collectionType > 0 {
-                                usageDict[HIDManagerCollectionTypeKey] = MustangDocument_CollectionTypeNames[collectionType]
+                                usageDict[HIDManager.collectionTypeKey] = MustangDocument.collectionTypeNames[collectionType]
                             }
                         }
                     }
@@ -383,11 +389,11 @@ class MustangDocument: NSPersistentDocument {
         for error in errors[0..<displayErrorCount] {
             
             if let validationObject = error.userInfo[NSValidationObjectErrorKey] {
-                if let usagePage = (validationObject as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as? Int {
+                if let usagePage = (validationObject as AnyObject).value( forKey: UsagePageEntity.usagePageKey ) as? Int {
                     // Only a UsagePageEntity has a usagePage property as an Int
                     errorString += "Usage Page \(usagePage): "
                 }
-                else if let usage = (validationObject as AnyObject).value( forKey: UsageEntity_UsageKey ) as? Int {
+                else if let usage = (validationObject as AnyObject).value( forKey: UsageEntity.usageKey ) as? Int {
                     // Only a UsageEntity has a usage property as an Int
                     errorString += "Usage \(usage): "
                 }

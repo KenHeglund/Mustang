@@ -10,6 +10,8 @@ import Cocoa
 
 class EqualsOneToTextColorTransformer: ValueTransformer {
     
+    public static let name = NSValueTransformerName( rawValue: "EqualsOneToTextColorTransformer" )
+    
     // MARK : - NSValueTransformer overrides
     
     /*==========================================================================*/
@@ -22,9 +24,4 @@ class EqualsOneToTextColorTransformer: ValueTransformer {
         guard let intValue = value as? Int else { return NSColor.disabledControlTextColor }
         return ( intValue == 1 ? NSColor.controlTextColor : NSColor.disabledControlTextColor )
     }
-}
-
-/*==========================================================================*/
-extension NSValueTransformerName {
-    public static let equalsOneToTextColorTransformerName = NSValueTransformerName( rawValue: "EqualsOneToTextColorTransformer" )
 }

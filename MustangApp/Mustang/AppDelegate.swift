@@ -14,9 +14,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     /*==========================================================================*/
     override func awakeFromNib() {
-        ValueTransformer.setValueTransformer( EqualsOneToBoolTransformer(), forName: .equalsOneToBoolTransformerName )
-        ValueTransformer.setValueTransformer( EqualsOneToTextColorTransformer(), forName: .equalsOneToTextColorTransformerName )
-        ValueTransformer.setValueTransformer( IsNotZeroTransformer(), forName: .isNotZeroTransformerName )
+        ValueTransformer.setValueTransformer( EqualsOneToBoolTransformer(), forName: EqualsOneToBoolTransformer.name )
+        ValueTransformer.setValueTransformer( EqualsOneToTextColorTransformer(), forName: EqualsOneToTextColorTransformer.name )
+        ValueTransformer.setValueTransformer( IsNotZeroTransformer(), forName: IsNotZeroTransformer.name )
     }
     
     /*==========================================================================*/

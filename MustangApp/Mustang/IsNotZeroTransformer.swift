@@ -10,6 +10,8 @@ import Cocoa
 
 class IsNotZeroTransformer: ValueTransformer {
     
+    public static let name = NSValueTransformerName( rawValue: "IsNotZeroTransformer" )
+    
     // MARK: - NSValueTransformer overrides
     
     /*==========================================================================*/
@@ -22,9 +24,4 @@ class IsNotZeroTransformer: ValueTransformer {
         guard let intValue = value as? Int else { return false }
         return intValue != 0
     }
-}
-
-/*==========================================================================*/
-extension NSValueTransformerName {
-    public static let isNotZeroTransformerName = NSValueTransformerName( rawValue: "IsNotZeroTransformer" )
 }
