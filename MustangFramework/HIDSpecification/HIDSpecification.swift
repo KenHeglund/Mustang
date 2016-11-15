@@ -8,27 +8,25 @@ import AppKit
 
 /*==========================================================================*/
 
-private let UsageNameFormatKey = "usageNameFormat"
-private let UsageNameKey = "name"
-
-private let UsagePlaceholder = "[[USAGE]]"
-
-private let UsageEntityName = "UsageEntity"
-private let UsagePageEntityName = "UsagePageEntity"
-
-private let ModelFileName = "MustangDocument"
-private let DataFileName = "HIDUsageTableDB"
-
-/*==========================================================================*/
-
-open class HIDSpecification: NSObject {
+public class HIDSpecification: NSObject {
+    
+    private static let usageNameFormatKey = "usageNameFormat"
+    private static let usageNameKey = "name"
+    
+    private static let usagePlaceholder = "[[USAGE]]"
+    
+    private static let usageEntityName = "UsageEntity"
+    private static let usagePageEntityName = "UsagePageEntity"
+    
+    private static let modelFileName = "MustangDocument"
+    private static let dataFileName = "HIDUsageTableDB"
     
     fileprivate static let managedObjectContext: NSManagedObjectContext? = {
         
         let bundle = Bundle( for: HIDSpecification.self )
         
-        guard let dataModelURL = bundle.url( forResource: ModelFileName, withExtension: "momd" ) else {
-            Swift.print( "HIDSpecification framework failed to locate data model \"\(ModelFileName)\"" )
+        guard let dataModelURL = bundle.url( forResource: HIDSpecification.modelFileName, withExtension: "momd" ) else {
+            Swift.print( "HIDSpecification framework failed to locate data model \"\(HIDSpecification.modelFileName)\"" )
             return nil
         }
         guard let managedObjectModel = NSManagedObjectModel( contentsOf: dataModelURL ) else {
@@ -38,8 +36,8 @@ open class HIDSpecification: NSObject {
         
         let persistentStoreCoordinator = NSPersistentStoreCoordinator( managedObjectModel: managedObjectModel )
         
-        guard let databaseURL = bundle.url( forResource: DataFileName, withExtension: "sqlite" ) else {
-            Swift.print( "HIDSpecification framework failed to locate data store \"\(DataFileName)\"" )
+        guard let databaseURL = bundle.url( forResource: HIDSpecification.dataFileName, withExtension: "sqlite" ) else {
+            Swift.print( "HIDSpecification framework failed to locate data store \"\(HIDSpecification.dataFileName)\"" )
             return nil
         }
         
@@ -73,11 +71,11 @@ open class HIDSpecification: NSObject {
         
         if let usage = usage {
             predicate = NSPredicate( format: "usage = %ld && usagePage.usagePage = %ld", usage, usagePage )
-            entityName = UsageEntityName
+            entityName = HIDSpecification.usageEntityName
         }
         else {
             predicate = NSPredicate( format: "usagePage = %ld", usagePage )
-            entityName = UsagePageEntityName
+            entityName = HIDSpecification.usagePageEntityName
         }
         
         var localError: NSError? = nil
@@ -112,40 +110,40 @@ open class HIDSpecification: NSObject {
     /*==========================================================================*/
     fileprivate static func namePropertyForUsagePage( _ usagePage: Int, usage: Int? ) -> String? {
         
-        if let standardName = HIDSpecification.propertyForUsagePage( usagePage, usage: usage, key: UsageNameKey ) as? String {
+        if let standardName = HIDSpecification.propertyForUsagePage( usagePage, usage: usage, key: HIDSpecification.usageNameKey ) as? String {
             return standardName
         }
         
         guard let usage = usage else { return nil }
-        guard let nameFormat = HIDSpecification.propertyForUsagePage( usagePage, usage: nil, key: UsageNameFormatKey ) else { return nil }
+        guard let nameFormat = HIDSpecification.propertyForUsagePage( usagePage, usage: nil, key: HIDSpecification.usageNameFormatKey ) else { return nil }
         
-        return ( nameFormat.replacingOccurrences( of: UsagePlaceholder, with: "\(usage)" ) )
+        return ( nameFormat.replacingOccurrences( of: HIDSpecification.usagePlaceholder, with: "\(usage)" ) )
     }
 
     // MARK: - Public methods
     
     /*==========================================================================*/
-    open static func nameForUsagePage( _ usagePage: Int, usage: Int ) -> String? {
+    public static func nameForUsagePage( _ usagePage: Int, usage: Int ) -> String? {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: usage ) )
     }
     
     /*==========================================================================*/
-    open static func nameForUsagePage( _ usagePage: Int ) -> String? {
+    public static func nameForUsagePage( _ usagePage: Int ) -> String? {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: nil ) )
     }
     
     /*==========================================================================*/
-    open static func isStandardUsagePage( _ usagePage: Int, usage: Int ) -> Bool {
+    public static func isStandardUsagePage( _ usagePage: Int, usage: Int ) -> Bool {
         
         guard usagePage != 0 && usage != 0 else {
             return false
         }
         
-        if HIDSpecification.propertyForUsagePage( usagePage, usage: usage, key: UsageNameKey ) != nil {
+        if HIDSpecification.propertyForUsagePage( usagePage, usage: usage, key: HIDSpecification.usageNameKey ) != nil {
             return true
         }
         
-        if HIDSpecification.propertyForUsagePage( usagePage, usage: nil, key: UsageNameFormatKey ) != nil {
+        if HIDSpecification.propertyForUsagePage( usagePage, usage: nil, key: HIDSpecification.usageNameFormatKey ) != nil {
             return true
         }
         

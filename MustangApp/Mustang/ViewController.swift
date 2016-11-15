@@ -8,10 +8,6 @@ import Cocoa
 
 /*==========================================================================*/
 
-private let ViewController_ColumnKey_Name = "name"
-
-/*==========================================================================*/
-
 class ViewController: NSViewController {
     
     @IBOutlet var usagePageArrayController: NSArrayController! = nil
@@ -19,6 +15,8 @@ class ViewController: NSViewController {
     
     @IBOutlet var usagePageTableView: NSTableView! = nil
     @IBOutlet var usageTableView: NSTableView! = nil
+    
+    private static let nameColumnKey = "name"
     
     var managedObjectContext: NSManagedObjectContext? {
         return self.representedObject as? NSManagedObjectContext
@@ -37,9 +35,9 @@ class ViewController: NSViewController {
         var newUsagePage: NSManagedObject! = nil
         
         managedObjectContext.performAndWait { 
-            newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntity_EntityName, into: managedObjectContext )
-            newUsagePage.setValue( nextUsagePageID, forKey: UsagePageEntity_UsagePageKey )
-            newUsagePage.setValue( "New Usage Page \(nextUsagePageID)", forKey: UsagePageEntity_NameKey )
+            newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntity.entityName, into: managedObjectContext )
+            newUsagePage.setValue( nextUsagePageID, forKey: UsagePageEntity.usagePageKey )
+            newUsagePage.setValue( "New Usage Page \(nextUsagePageID)", forKey: UsagePageEntity.nameKey )
         }
         
         self.usagePageArrayController.addObject( newUsagePage )
@@ -49,7 +47,7 @@ class ViewController: NSViewController {
         let selectedRow = self.usagePageArrayController.selectionIndex
         self.usagePageTableView.scrollRowToVisible( selectedRow )
         
-        let columnIndex = self.usagePageTableView.column( withIdentifier: ViewController_ColumnKey_Name )
+        let columnIndex = self.usagePageTableView.column( withIdentifier: ViewController.nameColumnKey )
         self.usagePageTableView.editColumn( columnIndex, row: selectedRow, with: nil, select: true )
     }
     
@@ -63,9 +61,9 @@ class ViewController: NSViewController {
         
         var newUsage:NSManagedObject! = nil
         managedObjectContext.performAndWait { 
-            newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntity_EntityName, into: managedObjectContext )
-            newUsage.setValue( nextUsageID, forKey: UsageEntity_UsageKey )
-            newUsage.setValue( "New Usage \(nextUsageID)", forKey: UsageEntity_NameKey )
+            newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntity.entityName, into: managedObjectContext )
+            newUsage.setValue( nextUsageID, forKey: UsageEntity.usageKey )
+            newUsage.setValue( "New Usage \(nextUsageID)", forKey: UsageEntity.nameKey )
         }
         
         self.usageArrayController.addObject( newUsage )
@@ -75,7 +73,7 @@ class ViewController: NSViewController {
         let selectedRow = self.usageArrayController.selectionIndex
         self.usageTableView.scrollRowToVisible( selectedRow )
         
-        let columnIndex = self.usageTableView.column( withIdentifier: ViewController_ColumnKey_Name )
+        let columnIndex = self.usageTableView.column( withIdentifier: ViewController.nameColumnKey )
         self.usageTableView.editColumn( columnIndex, row: selectedRow, with: nil, select: true )
     }
     
@@ -108,16 +106,16 @@ class ViewController: NSViewController {
         
         managedObjectContext.performAndWait {
             
-            let sortDescriptor = NSSortDescriptor( key: UsagePageEntity_UsagePageKey, ascending: false )
+            let sortDescriptor = NSSortDescriptor( key: UsagePageEntity.usagePageKey, ascending: false )
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntity_EntityName, in: managedObjectContext )
+            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntity.entityName, in: managedObjectContext )
             fetchRequest.sortDescriptors = [ sortDescriptor ]
             fetchRequest.fetchLimit = 1
             
             do {
                 let fetchResults = try managedObjectContext.fetch( fetchRequest )
-                let lastUsagePageID = (fetchResults.last as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as? Int ?? 0
+                let lastUsagePageID = (fetchResults.last as AnyObject).value( forKey: UsagePageEntity.usagePageKey ) as? Int ?? 0
                 
                 nextUsagePageID = ( lastUsagePageID + 1 )
             }
@@ -148,22 +146,22 @@ class ViewController: NSViewController {
         var localError: NSError? = nil
         
         let selectedUsagePage = selectedObjects.last
-        guard let usagePage = (selectedUsagePage as AnyObject).value( forKey: UsagePageEntity_UsagePageKey ) as? Int else { return nextUsageID }
+        guard let usagePage = (selectedUsagePage as AnyObject).value( forKey: UsagePageEntity.usagePageKey ) as? Int else { return nextUsageID }
         
         let predicate = NSPredicate( format: "usagePage.usagePage == %ld", usagePage )
-        let sortDescriptor = NSSortDescriptor( key: UsageEntity_UsageKey, ascending: false )
+        let sortDescriptor = NSSortDescriptor( key: UsageEntity.usageKey, ascending: false )
         
         managedObjectContext.performAndWait {
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsageEntity_EntityName, in: managedObjectContext )
+            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsageEntity.entityName, in: managedObjectContext )
             fetchRequest.predicate = predicate
             fetchRequest.sortDescriptors = [ sortDescriptor ]
             fetchRequest.fetchLimit = 1
             
             do {
                 let fetchResult = try managedObjectContext.fetch( fetchRequest )
-                let lastUsageID = (fetchResult.last as AnyObject).value( forKey: UsageEntity_UsageKey ) as? Int ?? 0
+                let lastUsageID = (fetchResult.last as AnyObject).value( forKey: UsageEntity.usageKey ) as? Int ?? 0
                 
                 nextUsageID = ( lastUsageID + 1 )
             }

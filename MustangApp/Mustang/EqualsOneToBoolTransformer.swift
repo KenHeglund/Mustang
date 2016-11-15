@@ -10,6 +10,8 @@ import Cocoa
 
 class EqualsOneToBoolTransformer: ValueTransformer {
     
+    public static let name = NSValueTransformerName( rawValue: "EqualsOneToBoolTransformer" )
+    
     // MARK: - NSValueTransformer overrides
     
     /*==========================================================================*/
@@ -22,9 +24,4 @@ class EqualsOneToBoolTransformer: ValueTransformer {
         guard let intValue = value as? Int else { return false }
         return intValue == 1
     }
-}
-
-/*==========================================================================*/
-extension NSValueTransformerName {
-    public static let equalsOneToBoolTransformerName = NSValueTransformerName( rawValue: "EqualsOneToBoolTransformer" )
 }
