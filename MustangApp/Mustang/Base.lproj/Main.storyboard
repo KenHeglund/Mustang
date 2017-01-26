@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -681,7 +681,7 @@ DQ
                         <rect key="frame" x="0.0" y="0.0" width="801" height="455"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <splitView arrangesAllSubviews="NO" dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-Qr-gvJ">
+                            <splitView dividerStyle="thin" vertical="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-Qr-gvJ">
                                 <rect key="frame" x="0.0" y="0.0" width="801" height="455"/>
                                 <subviews>
                                     <customView id="FSa-UJ-Spu" userLabel="Left Panel">
@@ -695,7 +695,7 @@ DQ
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" emptySelection="NO" autosaveColumns="NO" rowHeight="14" headerView="Uez-Jp-kJW" id="QJt-XE-1Mg">
-                                                            <rect key="frame" x="0.0" y="0.0" width="215" height="337"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="337"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -739,13 +739,12 @@ DQ
                                                             </tableColumns>
                                                         </tableView>
                                                     </subviews>
-                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </clipView>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="CVc-dy-W55"/>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="dNq-cp-1eP"/>
                                                 </constraints>
-                                                <scroller key="horizontalScroller" verticalHuggingPriority="750" doubleValue="0.42428762372173878" horizontal="YES" id="2sH-ve-HX7">
+                                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.42428762372173878" horizontal="YES" id="2sH-ve-HX7">
                                                     <rect key="frame" x="1" y="344" width="214" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
@@ -754,7 +753,7 @@ DQ
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
                                                 <tableHeaderView key="headerView" id="Uez-Jp-kJW">
-                                                    <rect key="frame" x="0.0" y="0.0" width="215" height="23"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="214" height="23"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </tableHeaderView>
                                             </scrollView>
@@ -918,12 +917,11 @@ DQ
                                                             </connections>
                                                         </tableView>
                                                     </subviews>
-                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </clipView>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="250" id="SKi-RF-LSU"/>
                                                 </constraints>
-                                                <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="GUF-ut-0rs">
+                                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="GUF-ut-0rs">
                                                     <rect key="frame" x="1" y="344" width="502" height="16"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                 </scroller>
