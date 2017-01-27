@@ -862,7 +862,7 @@ DQ
                                                                         <binding destination="eOi-8s-1ss" name="value" keyPath="arrangedObjects.usage" id="wuv-VS-sAi"/>
                                                                     </connections>
                                                                 </tableColumn>
-                                                                <tableColumn identifier="name" width="343" minWidth="40" maxWidth="1000" id="fzE-4v-wLn">
+                                                                <tableColumn identifier="name" width="217" minWidth="40" maxWidth="1000" id="fzE-4v-wLn">
                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -910,6 +910,32 @@ DQ
                                                                     <connections>
                                                                         <binding destination="eOi-8s-1ss" name="selectedIndex" keyPath="arrangedObjects.collectionType" id="SaN-81-DKu"/>
                                                                     </connections>
+                                                                </tableColumn>
+                                                                <tableColumn identifier="" width="60" minWidth="60" maxWidth="60" id="Dpm-YM-TgV">
+                                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Spurious">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                    </tableHeaderCell>
+                                                                    <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="only" controlSize="small" inset="2" id="Yph-UB-sni">
+                                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                    </buttonCell>
+                                                                    <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="spurious"/>
+                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                </tableColumn>
+                                                                <tableColumn identifier="" width="60" minWidth="60" maxWidth="60" id="FUI-Nb-rNP">
+                                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Doubtful">
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                        <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                    </tableHeaderCell>
+                                                                    <buttonCell key="dataCell" type="check" bezelStyle="regularSquare" imagePosition="only" controlSize="small" inset="2" id="I7t-io-1gc">
+                                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                        <font key="font" metaFont="smallSystem"/>
+                                                                    </buttonCell>
+                                                                    <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="doubtful"/>
+                                                                    <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                 </tableColumn>
                                                             </tableColumns>
                                                             <connections>
