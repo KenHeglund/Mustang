@@ -2,7 +2,9 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16D32" minimumToolsVersion="Xcode 7.0" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="UsageEntity" representedClassName="NSManagedObject" syncable="YES">
         <attribute name="collectionType" optional="YES" attributeType="Integer 16" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="doubtful" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="name" attributeType="String" minValueString="1" syncable="YES"/>
+        <attribute name="spurious" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="usage" attributeType="Integer 32" minValueString="0" maxValueString="65535" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="usagePage" maxCount="1" deletionRule="Nullify" destinationEntity="UsagePageEntity" inverseName="usages" inverseEntity="UsagePageEntity" syncable="YES"/>
     </entity>
@@ -13,7 +15,7 @@
         <relationship name="usages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UsageEntity" inverseName="usagePage" inverseEntity="UsageEntity" syncable="YES"/>
     </entity>
     <elements>
-        <element name="UsageEntity" positionX="-54" positionY="-9" width="128" height="105"/>
+        <element name="UsageEntity" positionX="-54" positionY="-9" width="128" height="135"/>
         <element name="UsagePageEntity" positionX="-36" positionY="36" width="128" height="105"/>
     </elements>
 </model>

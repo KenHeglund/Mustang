@@ -22,6 +22,8 @@ struct UsageEntity {
     static let nameKey = "name"
     static let usagePageKey = "usagePage"
     static let collectionTypeKey = "collectionType"
+    static let doubtfulKey = "doubtful"
+    static let spuriousKey = "spurious"
 }
 
 fileprivate struct HIDManager {
@@ -31,6 +33,8 @@ fileprivate struct HIDManager {
     static let usageNameKey = "UsageName"
     static let usageNameFormatKey = "UsageNameFormat"
     static let collectionTypeKey = "Collection"
+    static let doubtfulKey = "Doubtful"
+    static let spuriousKey = "Spurious"
 }
 
 /*==========================================================================*/
@@ -287,6 +291,14 @@ class MustangDocument: NSPersistentDocument {
                     if let collectionType = usageDict[HIDManager.collectionTypeKey] as? String {
                         newUsage.setValue( MustangDocument.collectionTypeNames.index( of: collectionType ), forKey: UsageEntity.collectionTypeKey )
                     }
+                    
+                    if let spurious = usageDict[HIDManager.spuriousKey] as? Bool {
+                        newUsage.setValue( spurious, forKey: UsageEntity.spuriousKey )
+                    }
+                    
+                    if let doubtful = usageDict[HIDManager.doubtfulKey] as? Bool {
+                        newUsage.setValue( doubtful, forKey: UsageEntity.doubtfulKey )
+                    }
                 }
             }
         }
@@ -330,7 +342,6 @@ class MustangDocument: NSPersistentDocument {
                     }
                     
                     let usagesDict = NSMutableDictionary()
-                    usagePageDict[HIDManager.usagesKey] = usagesDict
                     
                     guard let usageEntities = (usagePageEntity as AnyObject).value( forKey: UsagePageEntity.usagesKey ) as? NSSet else { continue }
                     
@@ -351,6 +362,24 @@ class MustangDocument: NSPersistentDocument {
                                 usageDict[HIDManager.collectionTypeKey] = MustangDocument.collectionTypeNames[collectionType]
                             }
                         }
+                        
+                        if let doubtful = (usageEntity as AnyObject).value( forKey: UsageEntity.doubtfulKey ) as? Bool {
+                            
+                            if doubtful {
+                                usageDict[HIDManager.doubtfulKey] = doubtful
+                            }
+                        }
+                        
+                        if let spurious = (usageEntity as AnyObject).value( forKey: UsageEntity.spuriousKey) as? Bool {
+                            
+                            if spurious {
+                                usageDict[HIDManager.spuriousKey] = spurious
+                            }
+                        }
+                    }
+                    
+                    if usagesDict.count > 0 {
+                        usagePageDict[HIDManager.usagesKey] = usagesDict
                     }
                 }
                 

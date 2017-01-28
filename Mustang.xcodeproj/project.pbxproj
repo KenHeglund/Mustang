@@ -95,6 +95,7 @@
 		BE1F1CDD1D05972400670EDD /* MustangDocument.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MustangDocument.xcdatamodel; sourceTree = "<group>"; };
 		BE7269D31D08932E0089BB1A /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BE7269D41D08932E0089BB1A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		BE88124A1E3C1EDF00E71800 /* MustangDocument 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "MustangDocument 2.xcdatamodel"; sourceTree = "<group>"; };
 		BEA7E6C11D027B9E00F39C0E /* Mustang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mustang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA7E6C41D027B9E00F39C0E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEA7E6C61D027B9E00F39C0E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -925,9 +926,10 @@
 		BE1F1CDC1D05972400670EDD /* MustangDocument.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				BE88124A1E3C1EDF00E71800 /* MustangDocument 2.xcdatamodel */,
 				BE1F1CDD1D05972400670EDD /* MustangDocument.xcdatamodel */,
 			);
-			currentVersion = BE1F1CDD1D05972400670EDD /* MustangDocument.xcdatamodel */;
+			currentVersion = BE88124A1E3C1EDF00E71800 /* MustangDocument 2.xcdatamodel */;
 			path = MustangDocument.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

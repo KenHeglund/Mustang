@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -923,6 +923,9 @@ DQ
                                                                     </buttonCell>
                                                                     <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="spurious"/>
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                    <connections>
+                                                                        <binding destination="eOi-8s-1ss" name="value" keyPath="arrangedObjects.spurious" id="t3s-LA-Knj"/>
+                                                                    </connections>
                                                                 </tableColumn>
                                                                 <tableColumn identifier="" width="60" minWidth="60" maxWidth="60" id="FUI-Nb-rNP">
                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Doubtful">
@@ -936,6 +939,9 @@ DQ
                                                                     </buttonCell>
                                                                     <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="doubtful"/>
                                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                                                    <connections>
+                                                                        <binding destination="eOi-8s-1ss" name="value" keyPath="arrangedObjects.doubtful" id="v9W-C8-U5u"/>
+                                                                    </connections>
                                                                 </tableColumn>
                                                             </tableColumns>
                                                             <connections>
