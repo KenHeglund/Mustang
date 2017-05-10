@@ -21,7 +21,7 @@ public class HIDSpecification: NSObject {
     private static let modelFileName = "MustangDocument"
     private static let dataFileName = "HIDUsageTableDB"
     
-    fileprivate static let managedObjectContext: NSManagedObjectContext? = {
+    private static let managedObjectContext: NSManagedObjectContext? = {
         
         let bundle = Bundle( for: HIDSpecification.self )
         
@@ -60,7 +60,7 @@ public class HIDSpecification: NSObject {
     // MARK: Private methods
     
     /*==========================================================================*/
-    fileprivate static func propertyForUsagePage( _ usagePage: Int, usage: Int?, key: String ) -> AnyObject? {
+    private static func propertyForUsagePage( _ usagePage: Int, usage: Int?, key: String ) -> AnyObject? {
         
         guard let managedObjectContext = HIDSpecification.managedObjectContext else { return nil }
         
@@ -108,7 +108,7 @@ public class HIDSpecification: NSObject {
     }
     
     /*==========================================================================*/
-    fileprivate static func namePropertyForUsagePage( _ usagePage: Int, usage: Int? ) -> String? {
+    private static func namePropertyForUsagePage( _ usagePage: Int, usage: Int? ) -> String {
         
         if let standardName = HIDSpecification.propertyForUsagePage( usagePage, usage: usage, key: HIDSpecification.usageNameKey ) as? String {
             return standardName
