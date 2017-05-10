@@ -35,9 +35,9 @@ class ViewController: NSViewController {
         var newUsagePage: NSManagedObject! = nil
         
         managedObjectContext.performAndWait { 
-            newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntity.entityName, into: managedObjectContext )
-            newUsagePage.setValue( nextUsagePageID, forKey: UsagePageEntity.usagePageKey )
-            newUsagePage.setValue( "New Usage Page \(nextUsagePageID)", forKey: UsagePageEntity.nameKey )
+            newUsagePage = NSEntityDescription.insertNewObject( forEntityName: UsagePageEntityKeys.entityName, into: managedObjectContext )
+            newUsagePage.setValue( nextUsagePageID, forKey: UsagePageEntityKeys.usagePageKey )
+            newUsagePage.setValue( "New Usage Page \(nextUsagePageID)", forKey: UsagePageEntityKeys.nameKey )
         }
         
         self.usagePageArrayController.addObject( newUsagePage )
@@ -61,9 +61,9 @@ class ViewController: NSViewController {
         
         var newUsage:NSManagedObject! = nil
         managedObjectContext.performAndWait { 
-            newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntity.entityName, into: managedObjectContext )
-            newUsage.setValue( nextUsageID, forKey: UsageEntity.usageKey )
-            newUsage.setValue( "New Usage \(nextUsageID)", forKey: UsageEntity.nameKey )
+            newUsage = NSEntityDescription.insertNewObject( forEntityName: UsageEntityKeys.entityName, into: managedObjectContext )
+            newUsage.setValue( nextUsageID, forKey: UsageEntityKeys.usageKey )
+            newUsage.setValue( "New Usage \(nextUsageID)", forKey: UsageEntityKeys.nameKey )
         }
         
         self.usageArrayController.addObject( newUsage )
@@ -106,16 +106,16 @@ class ViewController: NSViewController {
         
         managedObjectContext.performAndWait {
             
-            let sortDescriptor = NSSortDescriptor( key: UsagePageEntity.usagePageKey, ascending: false )
+            let sortDescriptor = NSSortDescriptor( key: UsagePageEntityKeys.usagePageKey, ascending: false )
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntity.entityName, in: managedObjectContext )
+            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsagePageEntityKeys.entityName, in: managedObjectContext )
             fetchRequest.sortDescriptors = [ sortDescriptor ]
             fetchRequest.fetchLimit = 1
             
             do {
                 let fetchResults = try managedObjectContext.fetch( fetchRequest )
-                let lastUsagePageID = (fetchResults.last as AnyObject).value( forKey: UsagePageEntity.usagePageKey ) as? Int ?? 0
+                let lastUsagePageID = (fetchResults.last as AnyObject).value( forKey: UsagePageEntityKeys.usagePageKey ) as? Int ?? 0
                 
                 nextUsagePageID = ( lastUsagePageID + 1 )
             }
@@ -146,22 +146,22 @@ class ViewController: NSViewController {
         var localError: NSError? = nil
         
         let selectedUsagePage = selectedObjects.last
-        guard let usagePage = (selectedUsagePage as AnyObject).value( forKey: UsagePageEntity.usagePageKey ) as? Int else { return nextUsageID }
+        guard let usagePage = (selectedUsagePage as AnyObject).value( forKey: UsagePageEntityKeys.usagePageKey ) as? Int else { return nextUsageID }
         
         let predicate = NSPredicate( format: "usagePage.usagePage == %ld", usagePage )
-        let sortDescriptor = NSSortDescriptor( key: UsageEntity.usageKey, ascending: false )
+        let sortDescriptor = NSSortDescriptor( key: UsageEntityKeys.usageKey, ascending: false )
         
         managedObjectContext.performAndWait {
             
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsageEntity.entityName, in: managedObjectContext )
+            fetchRequest.entity = NSEntityDescription.entity( forEntityName: UsageEntityKeys.entityName, in: managedObjectContext )
             fetchRequest.predicate = predicate
             fetchRequest.sortDescriptors = [ sortDescriptor ]
             fetchRequest.fetchLimit = 1
             
             do {
                 let fetchResult = try managedObjectContext.fetch( fetchRequest )
-                let lastUsageID = (fetchResult.last as AnyObject).value( forKey: UsageEntity.usageKey ) as? Int ?? 0
+                let lastUsageID = (fetchResult.last as AnyObject).value( forKey: UsageEntityKeys.usageKey ) as? Int ?? 0
                 
                 nextUsageID = ( lastUsageID + 1 )
             }
