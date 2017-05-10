@@ -23,6 +23,8 @@ public class HIDSpecification: NSObject {
     private static let modelFileName = "MustangDocument"
     private static let dataFileName = "HIDUsageTableDB"
     
+    private static let unknownUsageName = "Custom Control"
+    
     private static let managedObjectContext: NSManagedObjectContext? = {
         
         let bundle = Bundle( for: HIDSpecification.self )
@@ -116,8 +118,13 @@ public class HIDSpecification: NSObject {
             return standardName
         }
         
-        guard let usage = usage else { return nil }
-        guard let nameFormat = HIDSpecification.propertyForUsagePage( usagePage, usage: nil, key: HIDSpecification.usageNameFormatKey ) else { return nil }
+        guard let usage = usage else {
+            return "Custom Control Page #\(usagePage)"
+        }
+        
+        guard let nameFormat = HIDSpecification.propertyForUsagePage( usagePage, usage: nil, key: HIDSpecification.usageNameFormatKey ) else {
+            return HIDSpecification.unknownUsageName
+        }
         
         return ( nameFormat.replacingOccurrences( of: HIDSpecification.usagePlaceholder, with: "\(usage)" ) )
     }
@@ -125,12 +132,12 @@ public class HIDSpecification: NSObject {
     // MARK: - Public methods
     
     /*==========================================================================*/
-    public static func nameForUsagePage( _ usagePage: Int, usage: Int ) -> String? {
+    public static func nameForUsagePage( _ usagePage: Int, usage: Int ) -> String {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: usage ) )
     }
     
     /*==========================================================================*/
-    public static func nameForUsagePage( _ usagePage: Int ) -> String? {
+    public static func nameForUsagePage( _ usagePage: Int ) -> String {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: nil ) )
     }
     
