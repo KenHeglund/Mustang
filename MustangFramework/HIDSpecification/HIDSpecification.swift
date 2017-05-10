@@ -10,6 +10,8 @@ import AppKit
 
 public class HIDSpecification: NSObject {
     
+    private static let doubtfulElementKey = "doubtful"
+    private static let spuriousElementKey = "spurious"
     private static let usageNameFormatKey = "usageNameFormat"
     private static let usageNameKey = "name"
     
@@ -130,6 +132,16 @@ public class HIDSpecification: NSObject {
     /*==========================================================================*/
     public static func nameForUsagePage( _ usagePage: Int ) -> String? {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: nil ) )
+    }
+    
+    /*==========================================================================*/
+    public static func doubtfulForUsagePage( _ usagePage: Int, usage: Int ) -> Bool {
+        return ( HIDSpecification.propertyForUsagePage( usagePage, usage:usage, key:doubtfulElementKey ) as? Bool ?? false )
+    }
+    
+    /*==========================================================================*/
+    public static func spuriousForUsagePage( _ usagePage: Int, usage: Int ) -> Bool {
+        return ( HIDSpecification.propertyForUsagePage( usagePage, usage:usage, key:spuriousElementKey ) as? Bool ?? false )
     }
     
     /*==========================================================================*/

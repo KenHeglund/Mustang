@@ -37,6 +37,18 @@ class HIDSpecificationTests: XCTestCase {
     }
     
     /*==========================================================================*/
+    func testSwiftDoubtfulFlags() {
+        XCTAssertTrue( HIDSpecification.doubtfulForUsagePage( kHIDPage_KeyboardOrKeypad, usage:kHIDUsage_KeyboardVolumeUp ) )
+        XCTAssertFalse( HIDSpecification.doubtfulForUsagePage( kHIDPage_Consumer, usage:kHIDUsage_Csmr_ConsumerControl ) )
+    }
+    
+    /*==========================================================================*/
+    func testSwiftSpuriousFlags() {
+        XCTAssertTrue( HIDSpecification.spuriousForUsagePage( kHIDPage_KeyboardOrKeypad, usage:kHIDPage_Simulation ) )
+        XCTAssertFalse( HIDSpecification.spuriousForUsagePage( kHIDPage_Consumer, usage:kHIDUsage_Csmr_VolumeIncrement ) )
+    }
+    
+    /*==========================================================================*/
     func testStandardUsage() {
         XCTAssertTrue( HIDSpecification.isStandardUsagePage( kHIDPage_KeyboardOrKeypad, usage: kHIDUsage_KeyboardF1 ) )
         XCTAssertTrue( HIDSpecification.isStandardUsagePage( kHIDPage_Button, usage: 77 ) )
