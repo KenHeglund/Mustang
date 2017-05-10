@@ -38,7 +38,7 @@ fileprivate struct HIDManager {
 }
 
 /*==========================================================================*/
-let initializationTask: Void = {
+private let initializationTask: Void = {
     
     let defaultUsagePageTableSortKey = "usagePage"
     let defaultUsageTableSortKey = "usage"
