@@ -38,13 +38,30 @@ fileprivate struct HIDManager {
 }
 
 /*==========================================================================*/
+let initializationTask: Void = {
+    
+    let defaultUsagePageTableSortKey = "usagePage"
+    let defaultUsageTableSortKey = "usage"
+    let usagePageTableSortDescriptorKey = "UsagePageTableSortDescriptors"
+    let usageTableSortDescriptorKey = "UsageTableSortDescriptors"
+    
+    let usagePageDescriptor = NSSortDescriptor( key: defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+    let usagePageData = NSKeyedArchiver.archivedData( withRootObject: [usagePageDescriptor] )
+    
+    let usageDescriptor = NSSortDescriptor( key: defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+    let usageData = NSKeyedArchiver.archivedData( withRootObject: [usageDescriptor] )
+    
+    let defaultDict = [
+        usagePageTableSortDescriptorKey : usagePageData,
+        usageTableSortDescriptorKey : usageData,
+    ]
+    
+    UserDefaults.standard.register( defaults: defaultDict )
+}()
+
+/*==========================================================================*/
 
 class MustangDocument: NSPersistentDocument {
-    
-    private static let defaultUsagePageTableSortKey = "usagePage"
-    private static let defaultUsageTableSortKey = "usage"
-    private static let usagePageTableSortDescriptorKey = "UsagePageTableSortDescriptors"
-    private static let usageTableSortDescriptorKey = "UsageTableSortDescriptors"
     
     private static let collectionTypeNames = [ "None", "Application", "NamedArray", "Logical", "Physical" ]
     
@@ -64,31 +81,13 @@ class MustangDocument: NSPersistentDocument {
         
         super.init()
         
+        initializationTask
+        
         let persistentStoreCoordinator = self.managedObjectContext?.persistentStoreCoordinator
         let managedObjectContext = NSManagedObjectContext( concurrencyType: .mainQueueConcurrencyType )
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
         
         self.managedObjectContext = managedObjectContext
-    }
-    
-    
-    // MARK: - NSObject overrides
-    
-    /*==========================================================================*/
-    override class func initialize() {
-        
-        let usagePageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
-        let usagePageData = NSKeyedArchiver.archivedData( withRootObject: [usagePageDescriptor] )
-        
-        let usageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
-        let usageData = NSKeyedArchiver.archivedData( withRootObject: [usageDescriptor] )
-        
-        let defaultDict = [
-            MustangDocument.usagePageTableSortDescriptorKey : usagePageData,
-            MustangDocument.usageTableSortDescriptorKey : usageData,
-        ]
-        
-        UserDefaults.standard.register( defaults: defaultDict )
     }
     
     
