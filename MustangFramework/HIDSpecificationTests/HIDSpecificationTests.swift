@@ -32,8 +32,8 @@ class HIDSpecificationTests: XCTestCase {
         XCTAssertEqual( HIDSpecification.nameForUsagePage( kHIDPage_KeyboardOrKeypad, usage: kHIDUsage_KeyboardHyphen ), "Keyboard - and (underscore)" )
         XCTAssertEqual( HIDSpecification.nameForUsagePage( kHIDPage_KeyboardOrKeypad, usage: kHIDUsage_Keypad6 ), "Keypad 6 and Right Arrow" )
         XCTAssertEqual( HIDSpecification.nameForUsagePage( kHIDPage_Button, usage: 77 ), "Button #77" )
-        XCTAssertNil( HIDSpecification.nameForUsagePage( 23 ) )
-        XCTAssertNil( HIDSpecification.nameForUsagePage( kHIDPage_GenericDesktop, usage: 1324 ) )
+        XCTAssertEqual( HIDSpecification.nameForUsagePage( 23 ), "Custom Control Page #23" )
+        XCTAssertEqual( HIDSpecification.nameForUsagePage( kHIDPage_GenericDesktop, usage: 1324 ), "Custom Control" )
     }
     
     /*==========================================================================*/
