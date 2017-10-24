@@ -10,7 +10,7 @@ import AppKit
 
 class UsageTableDelegate: NSObject {
     
-    var inhibitSelectionChange = false
+    fileprivate var inhibitSelectionChange = false
     
     @IBOutlet var usageArrayController: NSArrayController! = nil
     
@@ -36,10 +36,15 @@ class UsageTableDelegate: NSObject {
         self.inhibitSelectionChange = true
     }
     
-    // MARK: - UsageTableDelegate implementation
+}
+
+/*==========================================================================*/
+// MARK: -
+
+extension UsageTableDelegate: NSTableViewDelegate {
     
     /*==========================================================================*/
-    func selectionShouldChangeInTableView( _ tableView: NSTableView ) -> Bool {
+    func selectionShouldChange(in tableView: NSTableView) -> Bool {
         
         // After changing a cell in an NSTableView, a delayed message is sent to the table to change its selection to just the row containing the edited cell.  The following code defeats that selection change and allows all rows that were selected at the time of the value change to remain selected thereafter.  A table's selection belongs to the user, not AppKit.
         
