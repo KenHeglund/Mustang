@@ -123,17 +123,17 @@ public class HIDSpecification: NSObject {
     // MARK: - Public methods
     
     /*==========================================================================*/
-    public static func nameForUsagePage( _ usagePage: Int, usage: Int ) -> String? {
+    @objc public static func nameForUsagePage( _ usagePage: Int, usage: Int ) -> String? {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: usage ) )
     }
     
     /*==========================================================================*/
-    public static func nameForUsagePage( _ usagePage: Int ) -> String? {
+    @objc public static func nameForUsagePage( _ usagePage: Int ) -> String? {
         return ( HIDSpecification.namePropertyForUsagePage( usagePage, usage: nil ) )
     }
     
     /*==========================================================================*/
-    public static func isStandardUsagePage( _ usagePage: Int, usage: Int ) -> Bool {
+    @objc public static func isStandardUsagePage( _ usagePage: Int, usage: Int ) -> Bool {
         
         guard usagePage != 0 && usage != 0 else {
             return false
