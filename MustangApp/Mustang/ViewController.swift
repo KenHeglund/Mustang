@@ -16,8 +16,8 @@ class ViewController: NSViewController {
     @IBOutlet var usagePageTableView: NSTableView! = nil
     @IBOutlet var usageTableView: NSTableView! = nil
     
-    private static let nameColumnKey = "name"
-    
+    private static let nameColumnIdentifier = NSUserInterfaceItemIdentifier(rawValue: "name")
+
     var managedObjectContext: NSManagedObjectContext? {
         return self.representedObject as? NSManagedObjectContext
     }
@@ -47,7 +47,7 @@ class ViewController: NSViewController {
         let selectedRow = self.usagePageArrayController.selectionIndex
         self.usagePageTableView.scrollRowToVisible( selectedRow )
         
-        let columnIndex = self.usagePageTableView.column( withIdentifier: ViewController.nameColumnKey )
+        let columnIndex = self.usagePageTableView.column( withIdentifier: ViewController.nameColumnIdentifier )
         self.usagePageTableView.editColumn( columnIndex, row: selectedRow, with: nil, select: true )
     }
     
@@ -73,7 +73,7 @@ class ViewController: NSViewController {
         let selectedRow = self.usageArrayController.selectionIndex
         self.usageTableView.scrollRowToVisible( selectedRow )
         
-        let columnIndex = self.usageTableView.column( withIdentifier: ViewController.nameColumnKey )
+        let columnIndex = self.usageTableView.column( withIdentifier: ViewController.nameColumnIdentifier )
         self.usageTableView.editColumn( columnIndex, row: selectedRow, with: nil, select: true )
     }
     
