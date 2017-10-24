@@ -60,6 +60,8 @@ class MustangDocument: NSPersistentDocument {
         
         super.init()
         
+        _ = MustangDocument.classInitialized
+        
         let persistentStoreCoordinator = self.managedObjectContext?.persistentStoreCoordinator
         let managedObjectContext = NSManagedObjectContext( concurrencyType: .mainQueueConcurrencyType )
         managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
@@ -68,38 +70,20 @@ class MustangDocument: NSPersistentDocument {
     }
     
     
-    // MARK: - NSObject overrides
-    
-    /*==========================================================================*/
-    override class func initialize() {
-        
-        let usagePageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
-        let usagePageData = NSKeyedArchiver.archivedData( withRootObject: [usagePageDescriptor] )
-        
-        let usageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
-        let usageData = NSKeyedArchiver.archivedData( withRootObject: [usageDescriptor] )
-        
-        let defaultDict = [
-            MustangDocument.usagePageTableSortDescriptorKey : usagePageData,
-            MustangDocument.usageTableSortDescriptorKey : usageData,
-        ]
-        
-        UserDefaults.standard.register( defaults: defaultDict )
-    }
-    
-    
     // MARK: - NSDocument overrides
     
     /*==========================================================================*/
-    override class func autosavesInPlace() -> Bool {
+    override class var autosavesInPlace: Bool {
         return false
     }
     
     /*==========================================================================*/
     override func makeWindowControllers() {
         
-        let storyboard = NSStoryboard( name: "Main", bundle: nil )
-        let windowController = storyboard.instantiateController( withIdentifier: "MustangDocument Window Controller" ) as! NSWindowController
+        let storyboardName = NSStoryboard.Name(rawValue: "Main")
+        let storyboard = NSStoryboard( name: storyboardName, bundle: nil )
+        let identifier = NSStoryboard.SceneIdentifier(rawValue: "MustangDocument Window Controller")
+        let windowController = storyboard.instantiateController( withIdentifier: identifier ) as! NSWindowController
         self.addWindowController( windowController )
         
         windowController.contentViewController?.representedObject = self.managedObjectContext
@@ -149,11 +133,11 @@ class MustangDocument: NSPersistentDocument {
     }
     
     /*==========================================================================*/
-    override func write( to absoluteURL: URL, ofType typeName: String, for saveOperation: NSSaveOperationType, originalContentsURL absoluteOriginalContentsURL: URL? ) throws {
+    override func write( to absoluteURL: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, originalContentsURL absoluteOriginalContentsURL: URL? ) throws {
         
         // Handle only the case where a SaveAs is being performed and an existing URL is present, defer to the superclass for everything else.
         
-        guard saveOperation == NSSaveOperationType.saveAsOperation else {
+        guard saveOperation == .saveAsOperation else {
             return try super.write( to: absoluteURL, ofType: typeName, for: saveOperation, originalContentsURL: absoluteOriginalContentsURL )
         }
         guard let originalContentURL = absoluteOriginalContentsURL else {
@@ -195,9 +179,9 @@ class MustangDocument: NSPersistentDocument {
         openPanel.allowsMultipleSelection = false
         openPanel.allowedFileTypes = [ "plist" ]
         
-        openPanel.beginSheetModal( for: window ) { ( result: Int ) in
+        openPanel.beginSheetModal( for: window ) { ( result: NSApplication.ModalResponse ) in
             
-            guard result == NSFileHandlingPanelOKButton else { return }
+            guard result == .OK else { return }
             guard let url = openPanel.urls.first else { return }
             
             self.importFromURL( url )
@@ -214,9 +198,9 @@ class MustangDocument: NSPersistentDocument {
         savePanel.canSelectHiddenExtension = true
         savePanel.allowedFileTypes = [ "plist" ]
         
-        savePanel.beginSheetModal( for: window ) { ( result: Int ) in
+        savePanel.beginSheetModal( for: window ) { ( result: NSApplication.ModalResponse ) in
             
-            guard result == NSFileHandlingPanelOKButton else { return }
+            guard result == .OK else { return }
             guard let url = savePanel.url else { return }
             
             self.exportToURL( url )
@@ -225,6 +209,25 @@ class MustangDocument: NSPersistentDocument {
     
     
     // MARK: - MustangDocument internal
+
+    /*==========================================================================*/
+    private static let classInitialized: Bool = {
+        
+        let usagePageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+        let usagePageData = NSKeyedArchiver.archivedData( withRootObject: [usagePageDescriptor] )
+        
+        let usageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+        let usageData = NSKeyedArchiver.archivedData( withRootObject: [usageDescriptor] )
+        
+        let defaultDict = [
+            MustangDocument.usagePageTableSortDescriptorKey : usagePageData,
+            MustangDocument.usageTableSortDescriptorKey : usageData,
+        ]
+        
+        UserDefaults.standard.register( defaults: defaultDict )
+        
+        return true
+    }()
     
     /*==========================================================================*/
     fileprivate func importFromURL( _ URL: Foundation.URL ) {
