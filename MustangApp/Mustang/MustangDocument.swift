@@ -37,11 +37,6 @@ fileprivate struct HIDManager {
 
 class MustangDocument: NSPersistentDocument {
     
-    private static let defaultUsagePageTableSortKey = "usagePage"
-    private static let defaultUsageTableSortKey = "usage"
-    private static let usagePageTableSortDescriptorKey = "UsagePageTableSortDescriptors"
-    private static let usageTableSortDescriptorKey = "UsageTableSortDescriptors"
-    
     private static let collectionTypeNames = [ "None", "Application", "NamedArray", "Logical", "Physical" ]
     
     fileprivate static let sqliteOptions = [
@@ -60,7 +55,7 @@ class MustangDocument: NSPersistentDocument {
         
         super.init()
         
-        _ = MustangDocument.classInitialized
+        _ = MustangDocument.classInitialization
         
         let persistentStoreCoordinator = self.managedObjectContext?.persistentStoreCoordinator
         let managedObjectContext = NSManagedObjectContext( concurrencyType: .mainQueueConcurrencyType )
@@ -211,22 +206,25 @@ class MustangDocument: NSPersistentDocument {
     // MARK: - MustangDocument internal
 
     /*==========================================================================*/
-    private static let classInitialized: Bool = {
+    private static let classInitialization: Void = {
         
-        let usagePageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+        let defaultUsagePageTableSortKey = "usagePage"
+        let defaultUsageTableSortKey = "usage"
+        let usagePageTableSortDescriptorKey = "UsagePageTableSortDescriptors"
+        let usageTableSortDescriptorKey = "UsageTableSortDescriptors"
+        
+        let usagePageDescriptor = NSSortDescriptor( key: defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
         let usagePageData = NSKeyedArchiver.archivedData( withRootObject: [usagePageDescriptor] )
         
-        let usageDescriptor = NSSortDescriptor( key: MustangDocument.defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
+        let usageDescriptor = NSSortDescriptor( key: defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)) )
         let usageData = NSKeyedArchiver.archivedData( withRootObject: [usageDescriptor] )
         
         let defaultDict = [
-            MustangDocument.usagePageTableSortDescriptorKey : usagePageData,
-            MustangDocument.usageTableSortDescriptorKey : usageData,
+            usagePageTableSortDescriptorKey : usagePageData,
+            usageTableSortDescriptorKey : usageData,
         ]
         
         UserDefaults.standard.register( defaults: defaultDict )
-        
-        return true
     }()
     
     /*==========================================================================*/
