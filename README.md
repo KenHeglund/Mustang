@@ -8,6 +8,6 @@ Mustang contains:
 
 ### Build Environment
 
-* Xcode 9 / macOS 10.13 SDK
+* Xcode 10.3 / macOS 10.14 SDK
 * Mustang Framework deploys to 10.9 or newer
 * Mustang Application deploys to 10.10 or newer
