@@ -31,6 +31,11 @@ for filePath in $(git diff --name-only --cached | grep ".swift$"); do
 	fileCount=$((fileCount + 1))
 done
 
+if [ $fileCount -eq 0 ]; then
+	echo "No Swift files to lint"
+	exit 0
+fi
+
 export SCRIPT_INPUT_FILE_COUNT=$fileCount
 
 ${swiftlintPath} --use-script-input-files
