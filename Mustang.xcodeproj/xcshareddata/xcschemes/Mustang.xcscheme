@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BE1AD85E1D0640B600149E33"
-               BuildableName = "HIDSpecification.framework"
-               BlueprintName = "HIDSpecification"
+               BlueprintIdentifier = "BEA7E6C01D027B9E00F39C0E"
+               BuildableName = "Mustang.app"
+               BlueprintName = "Mustang"
                ReferencedContainer = "container:Mustang.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,23 +27,24 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BE1AD85E1D0640B600149E33"
-            BuildableName = "HIDSpecification.framework"
-            BlueprintName = "HIDSpecification"
-            ReferencedContainer = "container:Mustang.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BE1AD8671D0640B600149E33"
-               BuildableName = "HIDSpecificationTests.xctest"
-               BlueprintName = "HIDSpecificationTests"
+               BlueprintIdentifier = "BEA7E6D61D027B9E00F39C0E"
+               BuildableName = "MustangTests.xctest"
+               BlueprintName = "MustangTests"
+               ReferencedContainer = "container:Mustang.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "BEA7E6E11D027B9E00F39C0E"
+               BuildableName = "MustangUITests.xctest"
+               BlueprintName = "MustangUITests"
                ReferencedContainer = "container:Mustang.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -59,15 +60,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BE1AD85E1D0640B600149E33"
-            BuildableName = "HIDSpecification.framework"
-            BlueprintName = "HIDSpecification"
+            BlueprintIdentifier = "BEA7E6C01D027B9E00F39C0E"
+            BuildableName = "Mustang.app"
+            BlueprintName = "Mustang"
             ReferencedContainer = "container:Mustang.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,15 +77,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "BE1AD85E1D0640B600149E33"
-            BuildableName = "HIDSpecification.framework"
-            BlueprintName = "HIDSpecification"
+            BlueprintIdentifier = "BEA7E6C01D027B9E00F39C0E"
+            BuildableName = "Mustang.app"
+            BlueprintName = "Mustang"
             ReferencedContainer = "container:Mustang.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
