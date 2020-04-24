@@ -8,6 +8,11 @@
 
 swiftlintPath=$(which swiftlint)
 
+# Run from the repository root
+repositoryRoot=$(git rev-parse --show-toplevel)
+cd ${repositoryRoot}
+echo "swiftlint.sh: Running from ${repositoryRoot}"
+
 # Verify the swiftlint executable is available
 if [ "${swiftlintPath}" == "" ]; then
 	echo "warning: swiftlint not installed. (https://github.com/realm/SwiftLint)"
@@ -18,6 +23,9 @@ elif [ ! -x "${swiftlintPath}" ]; then
 fi
 
 fileCount=0
+
+$OLD_IFS=${IFS}
+IFS=$'\n'
 
 # Add files that are modified or untracked, not staged, and not ignored.
 for filePath in $(git ls-files -m -o --exclude-from=.gitignore | grep ".swift$"); do
@@ -31,8 +39,11 @@ for filePath in $(git diff --name-only --cached | grep ".swift$"); do
 	fileCount=$((fileCount + 1))
 done
 
+IFS=${OLD_IFS}
+
+# Exit if there is nothing to lint
 if [ $fileCount -eq 0 ]; then
-	echo "No Swift files to lint"
+	echo "swiftlint.sh: Nothing to lint"
 	exit 0
 fi
 
