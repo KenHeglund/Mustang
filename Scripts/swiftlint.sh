@@ -8,6 +8,11 @@
 
 swiftlintPath=$(which swiftlint)
 
+# Run from the repository root
+repositoryRoot=$(git rev-parse --show-toplevel)
+cd ${repositoryRoot}
+echo "swiftlint.sh: Running from ${repositoryRoot}"
+
 # Verify the swiftlint executable is available
 if [ "${swiftlintPath}" == "" ]; then
 	echo "warning: swiftlint not installed. (https://github.com/realm/SwiftLint)"
@@ -30,6 +35,12 @@ for filePath in $(git diff --name-only --cached | grep ".swift$"); do
 	export SCRIPT_INPUT_FILE_$fileCount=$filePath
 	fileCount=$((fileCount + 1))
 done
+
+# Exit if there is nothing to lint
+if [ $fileCount -eq 0 ]; then
+	echo "swiftlint.sh: Nothing to lint"
+	exit 0
+fi
 
 export SCRIPT_INPUT_FILE_COUNT=$fileCount
 
