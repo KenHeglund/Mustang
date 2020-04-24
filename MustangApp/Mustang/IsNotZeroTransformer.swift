@@ -20,7 +20,7 @@ class IsNotZeroTransformer: ValueTransformer {
 	}
 	
 	/*==========================================================================*/
-	override func transformedValue( _ value: Any? ) -> Any? {
+	override func transformedValue(_ value: Any?) -> Any? {
 		if let intValue = value as? Int, intValue != 0 {
 			return true
 		}

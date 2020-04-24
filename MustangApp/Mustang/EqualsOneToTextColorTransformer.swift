@@ -20,7 +20,7 @@ class EqualsOneToTextColorTransformer: ValueTransformer {
 	}
 	
 	/*==========================================================================*/
-	override func transformedValue( _ value: Any? ) -> Any? {
+	override func transformedValue(_ value: Any?) -> Any? {
 		guard let intValue = value as? Int else {
 			return NSColor.disabledControlTextColor
 		}
