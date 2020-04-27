@@ -162,7 +162,7 @@ class MustangDocument: NSPersistentDocument {
 		let savePanel = NSSavePanel()
 		savePanel.canCreateDirectories = true
 		savePanel.canSelectHiddenExtension = true
-		savePanel.allowedFileTypes = [ "plist" ]
+		savePanel.allowedFileTypes = ["plist"]
 		
 		savePanel.beginSheetModal(for: window) { (result: NSApplication.ModalResponse) in
 			

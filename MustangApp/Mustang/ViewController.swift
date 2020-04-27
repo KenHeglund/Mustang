@@ -125,7 +125,7 @@ class ViewController: NSViewController {
 			
 			let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 			fetchRequest.entity = NSEntityDescription.entity(forEntityName: Entity.UsagePage.entityName, in: managedObjectContext)
-			fetchRequest.sortDescriptors = [ sortDescriptor ]
+			fetchRequest.sortDescriptors = [sortDescriptor]
 			fetchRequest.fetchLimit = 1
 			
 			do {
@@ -177,7 +177,7 @@ class ViewController: NSViewController {
 			let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 			fetchRequest.entity = NSEntityDescription.entity(forEntityName: Entity.Usage.entityName, in: managedObjectContext)
 			fetchRequest.predicate = predicate
-			fetchRequest.sortDescriptors = [ sortDescriptor ]
+			fetchRequest.sortDescriptors = [sortDescriptor]
 			fetchRequest.fetchLimit = 1
 			
 			do {
