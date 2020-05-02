@@ -65,6 +65,7 @@
 		BE1F1CD81D0588F700670EDD /* EqualsOneToBoolTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualsOneToBoolTransformer.swift; sourceTree = "<group>"; };
 		BE1F1CDA1D058A4E00670EDD /* EqualsOneToTextColorTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EqualsOneToTextColorTransformer.swift; sourceTree = "<group>"; };
 		BE1F1CDD1D05972400670EDD /* MustangDocument.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MustangDocument.xcdatamodel; sourceTree = "<group>"; };
+		BE62F13F245D3EA5009C4B64 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = ../.swiftlint.yml; sourceTree = "<group>"; };
 		BE7269D31D08932E0089BB1A /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		BE7269D41D08932E0089BB1A /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		BEA7E6C11D027B9E00F39C0E /* Mustang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mustang.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,7 +82,6 @@
 		BEA7E6E61D027B9E00F39C0E /* MustangUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MustangUITests.swift; sourceTree = "<group>"; };
 		BEA7E6E81D027B9E00F39C0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BEB5AF57244704F6009498CD /* swiftlint.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = swiftlint.sh; sourceTree = "<group>"; };
-		BEB5AF5A2447125F009498CD /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		BEB5AF5B24481C4F009498CD /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		BEB5AF5D24482608009498CD /* HIDManagerKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HIDManagerKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,7 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				BEB5AF57244704F6009498CD /* swiftlint.sh */,
-				BEB5AF5A2447125F009498CD /* .swiftlint.yml */,
+				BE62F13F245D3EA5009C4B64 /* .swiftlint.yml */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";

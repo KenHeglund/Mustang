@@ -24,7 +24,7 @@ fi
 
 fileCount=0
 
-$OLD_IFS=${IFS}
+OLD_IFS=${IFS}
 IFS=$'\n'
 
 # Add files that are modified or untracked, not staged, and not ignored.
