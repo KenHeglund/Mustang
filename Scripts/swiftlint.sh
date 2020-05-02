@@ -29,14 +29,18 @@ IFS=$'\n'
 
 # Add files that are modified or untracked, not staged, and not ignored.
 for filePath in $(git ls-files -m -o --exclude-from=.gitignore | grep ".swift$"); do
-	export SCRIPT_INPUT_FILE_$fileCount=$filePath
-	fileCount=$((fileCount + 1))
+	if [ -e "${filePath}" ]; then
+		export SCRIPT_INPUT_FILE_$fileCount=$filePath
+		fileCount=$((fileCount + 1))
+	fi
 done
 
 # Add staged files.
 for filePath in $(git diff --name-only --cached | grep ".swift$"); do
-	export SCRIPT_INPUT_FILE_$fileCount=$filePath
-	fileCount=$((fileCount + 1))
+	if [ -e "${filePath}" ]; then
+		export SCRIPT_INPUT_FILE_$fileCount=$filePath
+		fileCount=$((fileCount + 1))
+	fi
 done
 
 IFS=${OLD_IFS}
