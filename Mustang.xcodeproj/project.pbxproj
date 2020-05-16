@@ -384,27 +384,39 @@
 				TargetAttributes = {
 					BE1AD85E1D0640B600149E33 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 72C3P5QCVR;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Manual;
 					};
 					BE1AD8671D0640B600149E33 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 72C3P5QCVR;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Manual;
 					};
 					BE1AD8841D064A9F00149E33 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 72C3P5QCVR;
+						ProvisioningStyle = Manual;
 					};
 					BEA7E6C01D027B9E00F39C0E = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 72C3P5QCVR;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Manual;
 					};
 					BEA7E6D61D027B9E00F39C0E = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 72C3P5QCVR;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Manual;
 						TestTargetID = BEA7E6C01D027B9E00F39C0E;
 					};
 					BEA7E6E11D027B9E00F39C0E = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 72C3P5QCVR;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Manual;
 						TestTargetID = BEA7E6C01D027B9E00F39C0E;
 					};
 				};
@@ -613,7 +625,6 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/MustangFramework/HIDSpecification/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.HIDSpecification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -636,7 +647,6 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/MustangFramework/HIDSpecification/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.HIDSpecification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -710,8 +720,12 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 72C3P5QCVR;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -731,6 +745,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -766,8 +781,12 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Developer ID Application";
+				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 72C3P5QCVR;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -780,6 +799,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CODE_SIGN_FLAGS = "--timestamp";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
