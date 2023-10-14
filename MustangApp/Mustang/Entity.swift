@@ -1,14 +1,13 @@
 /*===========================================================================
-Entity.swift
-Mustang
-Copyright (c) 2020 OrderedBytes. All rights reserved.
-===========================================================================*/
+ Entity.swift
+ Mustang
+ Copyright (c) 2020,2023 OrderedBytes. All rights reserved.
+ ===========================================================================*/
 
 import Foundation
 
+
 enum Entity {
-	
-	/*==========================================================================*/
 	enum UsagePage {
 		static let entityName = "UsagePageEntity"
 		static let usagePageKey = "usagePage"
@@ -17,7 +16,6 @@ enum Entity {
 		static let usagesKey = "usages"
 	}
 	
-	/*==========================================================================*/
 	enum Usage {
 		static let entityName = "UsageEntity"
 		static let usageKey = "usage"

@@ -1,15 +1,15 @@
 /*===========================================================================
-HIDSpecification.swift
-Mustang
-Copyright (c) 2015 OrderedBytes. All rights reserved.
-===========================================================================*/
+ HIDSpecification.swift
+ Mustang
+ Copyright (c) 2015,2023 OrderedBytes. All rights reserved.
+ ===========================================================================*/
 
 import AppKit
 
-/*==========================================================================*/
+
+// MARK: - HIDSpecification
 
 public class HIDSpecification: NSObject {
-	
 	private static let usageNameFormatKey = "usageNameFormat"
 	private static let usageNameKey = "name"
 	
@@ -22,7 +22,6 @@ public class HIDSpecification: NSObject {
 	private static let dataFileName = "HIDUsageTableDB"
 	
 	private static let managedObjectContext: NSManagedObjectContext? = {
-		
 		let bundle = Bundle(for: HIDSpecification.self)
 		
 		guard let dataModelURL = bundle.url(forResource: HIDSpecification.modelFileName, withExtension: "momd") else {
@@ -60,9 +59,7 @@ public class HIDSpecification: NSObject {
 	
 	// MARK: - Private
 	
-	/*==========================================================================*/
 	private static func propertyForUsagePage(_ usagePage: Int, usage: Int?, key: String) -> AnyObject? {
-		
 		guard let managedObjectContext = HIDSpecification.managedObjectContext else {
 			return nil
 		}
@@ -75,16 +72,13 @@ public class HIDSpecification: NSObject {
 		if let usage = usage {
 			predicate = NSPredicate(format: "usage = %ld && usagePage.usagePage = %ld", usage, usagePage)
 			entityName = HIDSpecification.usageEntityName
-		}
-		else {
+		} else {
 			predicate = NSPredicate(format: "usagePage = %ld", usagePage)
 			entityName = HIDSpecification.usagePageEntityName
 		}
 		
 		var localError: NSError?
-		
 		managedObjectContext.performAndWait {
-			
 			let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 			fetchRequest.entity = NSEntityDescription.entity(forEntityName: entityName, in: managedObjectContext)
 			fetchRequest.predicate = predicate
@@ -110,9 +104,7 @@ public class HIDSpecification: NSObject {
 		return propertyValue
 	}
 	
-	/*==========================================================================*/
 	private static func namePropertyForUsagePage(_ usagePage: Int, usage: Int?) -> String? {
-		
 		if let standardName = HIDSpecification.propertyForUsagePage(usagePage, usage: usage, key: HIDSpecification.usageNameKey) as? String {
 			return standardName
 		}
@@ -128,21 +120,17 @@ public class HIDSpecification: NSObject {
 	}
 	
 	
-	// MARK: - Public methods
+	// MARK: - Public
 	
-	/*==========================================================================*/
 	@objc public static func nameForUsagePage(_ usagePage: Int, usage: Int) -> String? {
 		HIDSpecification.namePropertyForUsagePage(usagePage, usage: usage)
 	}
 	
-	/*==========================================================================*/
 	@objc public static func nameForUsagePage(_ usagePage: Int) -> String? {
 		HIDSpecification.namePropertyForUsagePage(usagePage, usage: nil)
 	}
 	
-	/*==========================================================================*/
 	@objc public static func isStandardUsagePage(_ usagePage: Int, usage: Int) -> Bool {
-		
 		guard usagePage != 0, usage != 0 else {
 			return false
 		}

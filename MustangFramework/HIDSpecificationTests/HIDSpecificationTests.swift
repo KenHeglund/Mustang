@@ -1,30 +1,15 @@
 /*===========================================================================
 HIDSpecificationTests.swift
 HIDSpecificationTests
-Copyright (c) 2016 OrderedBytes. All rights reserved.
+Copyright (c) 2016,2023 OrderedBytes. All rights reserved.
 ===========================================================================*/
 
 @testable import HIDSpecification
 import IOKit.hid
 import XCTest
 
-/*==========================================================================*/
 
 class HIDSpecificationTests: XCTestCase {
-	
-	/*==========================================================================*/
-	override func setUp() {
-		super.setUp()
-		// Put setup code here. This method is called before the invocation of each test method in the class.
-	}
-	
-	/*==========================================================================*/
-	override func tearDown() {
-		// Put teardown code here. This method is called after the invocation of each test method in the class.
-		super.tearDown()
-	}
-	
-	/*==========================================================================*/
 	func testNames() {
 		XCTAssertEqual(HIDSpecification.nameForUsagePage(kHIDPage_GenericDesktop), "Generic Desktop Controls")
 		XCTAssertEqual(HIDSpecification.nameForUsagePage(kHIDPage_Simulation), "Simulation Controls")
@@ -36,7 +21,6 @@ class HIDSpecificationTests: XCTestCase {
 		XCTAssertNil(HIDSpecification.nameForUsagePage(kHIDPage_GenericDesktop, usage: 1324))
 	}
 	
-	/*==========================================================================*/
 	func testStandardUsage() {
 		XCTAssertTrue(HIDSpecification.isStandardUsagePage(kHIDPage_KeyboardOrKeypad, usage: kHIDUsage_KeyboardF1))
 		XCTAssertTrue(HIDSpecification.isStandardUsagePage(kHIDPage_Button, usage: 77))

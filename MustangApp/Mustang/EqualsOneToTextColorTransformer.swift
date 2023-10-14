@@ -1,25 +1,22 @@
 /*===========================================================================
-EqualsOneToTextColorTransformer.swift
-Mustang
-Copyright (c) 2016 OrderedBytes. All rights reserved.
-===========================================================================*/
+ EqualsOneToTextColorTransformer.swift
+ Mustang
+ Copyright (c) 2016,2023 OrderedBytes. All rights reserved.
+ ===========================================================================*/
 
-import Cocoa
+import AppKit
+import Foundation
 
-/*==========================================================================*/
+
+// MARK: - EqualsOneToTextColorTransformer
 
 class EqualsOneToTextColorTransformer: ValueTransformer {
-	
 	static let name = NSValueTransformerName(rawValue: "EqualsOneToTextColorTransformer")
 	
-	// MARK: - NSValueTransformer overrides
-	
-	/*==========================================================================*/
 	override class func allowsReverseTransformation() -> Bool {
 		false
 	}
 	
-	/*==========================================================================*/
 	override func transformedValue(_ value: Any?) -> Any? {
 		guard let intValue = value as? Int else {
 			return NSColor.disabledControlTextColor

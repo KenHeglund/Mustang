@@ -1,24 +1,20 @@
 /*===========================================================================
-UsageTableDelegate.swift
-Mustang
-Copyright (c) 2015 OrderedBytes. All rights reserved.
-===========================================================================*/
+ UsageTableDelegate.swift
+ Mustang
+ Copyright (c) 2015,2023 OrderedBytes. All rights reserved.
+ ===========================================================================*/
 
 import AppKit
 
-/*==========================================================================*/
+
+// MARK: - UsageTableDelegate
 
 class UsageTableDelegate: NSObject {
-	
-	// MARK: - Private
-	
 	private var inhibitSelectionChange = false
 	
 	@IBOutlet private var usageArrayController: NSArrayController!
 	
-	/*==========================================================================*/
 	@IBAction private func doChangeControl(_ sender: AnyObject) {
-		
 		guard let tableView = sender as? NSTableView else {
 			return
 		}
@@ -43,14 +39,11 @@ class UsageTableDelegate: NSObject {
 	}
 }
 
-/*==========================================================================*/
-// MARK: -
+
+// MARK: - NSTableViewDelegate
 
 extension UsageTableDelegate: NSTableViewDelegate {
-	
-	/*==========================================================================*/
 	func selectionShouldChange(in tableView: NSTableView) -> Bool {
-		
 		// After changing a cell in an NSTableView, a delayed message is sent to the table to change its selection to just the row containing the edited cell.  The following code defeats that selection change and allows all rows that were selected at the time of the value change to remain selected thereafter.  A table's selection belongs to the user, not AppKit.
 		
 		if RunLoop.current.currentMode == nil {

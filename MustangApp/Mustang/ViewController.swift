@@ -1,32 +1,42 @@
 /*===========================================================================
-ViewController.swift
-Mustang
-Copyright (c) 2016 OrderedBytes. All rights reserved.
-===========================================================================*/
+ ViewController.swift
+ Mustang
+ Copyright (c) 2016,2023 OrderedBytes. All rights reserved.
+ ===========================================================================*/
 
-import Cocoa
+import AppKit
 
-/*==========================================================================*/
+
+// MARK: - ViewController
 
 class ViewController: NSViewController {
-	
-	// MARK: - Private
-	
 	@IBOutlet private var usagePageArrayController: NSArrayController!
 	@IBOutlet private var usageArrayController: NSArrayController!
 	
 	@IBOutlet private var usagePageTableView: NSTableView!
 	@IBOutlet private var usageTableView: NSTableView!
 	
+	@objc private dynamic var usageSortDescriptors: [NSSortDescriptor] = []
+	
+	@objc private dynamic var usagePageSortDescriptors: [NSSortDescriptor] = []
+
 	private static let nameColumnIdentifier = NSUserInterfaceItemIdentifier(rawValue: "name")
 	
 	var managedObjectContext: NSManagedObjectContext? {
 		self.representedObject as? NSManagedObjectContext
 	}
 	
-	/*==========================================================================*/
-	@IBAction private  func doAddUsagePage(_ sender: AnyObject?) {
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		
+		let defaultUsagePageTableSortKey = "usagePage"
+		let defaultUsageTableSortKey = "usage"
+		
+		self.usagePageSortDescriptors = [NSSortDescriptor(key: defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)))]
+		self.usageSortDescriptors = [NSSortDescriptor(key: defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)))]
+	}
+	
+	@IBAction private  func doAddUsagePage(_ sender: AnyObject?) {
 		guard let managedObjectContext = self.managedObjectContext else {
 			fatalError("Failed to obtain managed object context")
 		}
@@ -35,7 +45,6 @@ class ViewController: NSViewController {
 		}
 		
 		var newObject: NSManagedObject?
-		
 		managedObjectContext.performAndWait {
 			newObject = NSEntityDescription.insertNewObject(forEntityName: Entity.UsagePage.entityName, into: managedObjectContext)
 			newObject?.setValue(nextUsagePageID, forKey: Entity.UsagePage.usagePageKey)
@@ -57,9 +66,7 @@ class ViewController: NSViewController {
 		self.usagePageTableView.editColumn(columnIndex, row: selectedRow, with: nil, select: true)
 	}
 	
-	/*==========================================================================*/
 	@IBAction private func doAddUsage(_ sender: AnyObject?) {
-		
 		guard let managedObjectContext = self.managedObjectContext else {
 			fatalError("Failed to obtain managed object context")
 		}
@@ -68,7 +75,6 @@ class ViewController: NSViewController {
 		}
 		
 		var newObject: NSManagedObject?
-		
 		managedObjectContext.performAndWait {
 			newObject = NSEntityDescription.insertNewObject(forEntityName: Entity.Usage.entityName, into: managedObjectContext)
 			newObject?.setValue(nextUsageID, forKey: Entity.Usage.usageKey)
@@ -90,27 +96,22 @@ class ViewController: NSViewController {
 		self.usageTableView.editColumn(columnIndex, row: selectedRow, with: nil, select: true)
 	}
 	
-	/*==========================================================================*/
 	@IBAction private func doAddUsagePageOrUsage(_ sender: AnyObject?) {
-		
 		guard let firstResponder = self.view.window?.firstResponder else {
 			return
 		}
 		
 		if firstResponder === self.usagePageTableView {
 			self.doAddUsagePage(sender)
-		}
-		else if firstResponder === self.usageTableView {
+		} else if firstResponder === self.usageTableView {
 			self.doAddUsage(sender)
 		}
 	}
 	
 	
-	// MARK: - MustangDocument internal
+	// MARK: - MustangDocument
 	
-	/*==========================================================================*/
 	private func nextUsagePageID() -> Int? {
-		
 		guard let managedObjectContext = self.managedObjectContext else {
 			fatalError("Failed to obtain managed object context")
 		}
@@ -118,11 +119,8 @@ class ViewController: NSViewController {
 		var nextUsagePageID = 1
 		
 		var localError: NSError?
-		
 		managedObjectContext.performAndWait {
-			
 			let sortDescriptor = NSSortDescriptor(key: Entity.UsagePage.usagePageKey, ascending: false)
-			
 			let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 			fetchRequest.entity = NSEntityDescription.entity(forEntityName: Entity.UsagePage.entityName, in: managedObjectContext)
 			fetchRequest.sortDescriptors = [sortDescriptor]
@@ -131,7 +129,6 @@ class ViewController: NSViewController {
 			do {
 				let fetchResults = try managedObjectContext.fetch(fetchRequest)
 				let lastUsagePageID = (fetchResults.last as AnyObject).value(forKey: Entity.UsagePage.usagePageKey) as? Int ?? 0
-				
 				nextUsagePageID = (lastUsagePageID + 1)
 			}
 			catch {
@@ -147,9 +144,7 @@ class ViewController: NSViewController {
 		return nextUsagePageID
 	}
 	
-	/*==========================================================================*/
 	private func nextUsageID() -> Int? {
-		
 		guard let managedObjectContext = self.managedObjectContext else {
 			fatalError("Failed to obtain managed object context")
 		}
@@ -173,7 +168,6 @@ class ViewController: NSViewController {
 		let sortDescriptor = NSSortDescriptor(key: Entity.Usage.usageKey, ascending: false)
 		
 		managedObjectContext.performAndWait {
-			
 			let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
 			fetchRequest.entity = NSEntityDescription.entity(forEntityName: Entity.Usage.entityName, in: managedObjectContext)
 			fetchRequest.predicate = predicate
@@ -183,7 +177,6 @@ class ViewController: NSViewController {
 			do {
 				let fetchResult = try managedObjectContext.fetch(fetchRequest)
 				let lastUsageID = (fetchResult.last as AnyObject).value(forKey: Entity.Usage.usageKey) as? Int ?? 0
-				
 				nextUsageID = (lastUsageID + 1)
 			}
 			catch {

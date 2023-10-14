@@ -1,38 +1,32 @@
 /*===========================================================================
-MustangDocument.swift
-Mustang
-Copyright (c) 2016 OrderedBytes. All rights reserved.
-===========================================================================*/
+ MustangDocument.swift
+ Mustang
+ Copyright (c) 2016,2023 OrderedBytes. All rights reserved.
+ ===========================================================================*/
 
-import Cocoa
+import AppKit
+import CoreData
 
-/*==========================================================================*/
+
+// MARK: - MustangDocument
 
 class MustangDocument: NSPersistentDocument {
-	
-	/*==========================================================================*/
 	override init() {
-		
 		super.init()
-		
-		_ = MustangDocument.classInitialization
 		
 		let persistentStoreCoordinator = self.managedObjectContext?.persistentStoreCoordinator
 		let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
 		managedObjectContext.persistentStoreCoordinator = persistentStoreCoordinator
-		
 		self.managedObjectContext = managedObjectContext
 	}
 	
 	
 	// MARK: - NSDocument
 	
-	/*==========================================================================*/
 	override class var autosavesInPlace: Bool {
 		false
 	}
 	
-	/*==========================================================================*/
 	override func makeWindowControllers() {
 		let storyboardName: NSStoryboard.Name = "Main"
 		let storyboard = NSStoryboard(name: storyboardName, bundle: nil)
@@ -47,9 +41,7 @@ class MustangDocument: NSPersistentDocument {
 		windowController.contentViewController?.representedObject = self.managedObjectContext
 	}
 	
-	/*==========================================================================*/
 	override func willPresentError(_ originalError: Error) -> Error {
-		
 		let error = originalError as NSError
 		
 		if error.domain != NSCocoaErrorDomain {
@@ -61,14 +53,11 @@ class MustangDocument: NSPersistentDocument {
 		}
 		
 		let errorString: String
-		
 		if let detailedErrors = error.userInfo[NSDetailedErrorsKey] as? [NSError] {
 			errorString = self.errorStringForErrors(detailedErrors)
-		}
-		else if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {
+		} else if let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError {
 			errorString = self.errorStringForErrors([underlyingError])
-		}
-		else {
+		} else {
 			return error
 		}
 		
@@ -81,24 +70,18 @@ class MustangDocument: NSPersistentDocument {
 	
 	// MARK: - NSPersistentDocument
 	
-	/*==========================================================================*/
 	override func configurePersistentStoreCoordinator(for url: URL, ofType fileType: String, modelConfiguration configuration: String?, storeOptions: [String: Any]?) throws {
 		
 		let options = MustangDocument.sqliteOptions
-		
 		let persistentStoreCoordinator = self.managedObjectContext?.persistentStoreCoordinator
 		try persistentStoreCoordinator?.addPersistentStore(ofType: fileType, configurationName: configuration, at: url, options: options)
 	}
 	
-	/*==========================================================================*/
 	override func write(to absoluteURL: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, originalContentsURL absoluteOriginalContentsURL: URL?) throws {
 		
 		// Handle only the case where a SaveAs is being performed and an existing URL is present, defer to the superclass for everything else.
 		
-		guard saveOperation == .saveAsOperation else {
-			return try super.write(to: absoluteURL, ofType: typeName, for: saveOperation, originalContentsURL: absoluteOriginalContentsURL)
-		}
-		guard let originalContentURL = absoluteOriginalContentsURL else {
+		guard saveOperation == .saveAsOperation, let originalContentURL = absoluteOriginalContentsURL else {
 			return try super.write(to: absoluteURL, ofType: typeName, for: saveOperation, originalContentsURL: absoluteOriginalContentsURL)
 		}
 		
@@ -125,11 +108,9 @@ class MustangDocument: NSPersistentDocument {
 	}
 	
 	
-	// MARK: - IBAction implementation
+	// MARK: - IBAction
 	
-	/*==========================================================================*/
 	@IBAction private func doImport(_ sender: AnyObject) {
-		
 		guard let window = self.windowForSheet else {
 			return
 		}
@@ -137,14 +118,14 @@ class MustangDocument: NSPersistentDocument {
 		let openPanel = NSOpenPanel()
 		openPanel.canChooseDirectories = false
 		openPanel.allowsMultipleSelection = false
-		openPanel.allowedFileTypes = ["plist"]
+		if #available(macOS 11.0, *) {
+			openPanel.allowedContentTypes = [.propertyList]
+		} else {
+			openPanel.allowedFileTypes = ["plist"]
+		}
 		
-		openPanel.beginSheetModal(for: window) { (result: NSApplication.ModalResponse) in
-			
-			guard result == .OK else {
-				return
-			}
-			guard let url = openPanel.urls.first else {
+		openPanel.beginSheetModal(for: window) { result in
+			guard result == .OK, let url = openPanel.urls.first else {
 				return
 			}
 			
@@ -152,9 +133,7 @@ class MustangDocument: NSPersistentDocument {
 		}
 	}
 	
-	/*==========================================================================*/
 	@IBAction private func doExport(_ sender: AnyObject) {
-		
 		guard let window = self.windowForSheet else {
 			return
 		}
@@ -162,14 +141,14 @@ class MustangDocument: NSPersistentDocument {
 		let savePanel = NSSavePanel()
 		savePanel.canCreateDirectories = true
 		savePanel.canSelectHiddenExtension = true
-		savePanel.allowedFileTypes = ["plist"]
+		if #available(macOS 11.0, *) {
+			savePanel.allowedContentTypes = [.propertyList]
+		} else {
+			savePanel.allowedFileTypes = ["plist"]
+		}
 		
-		savePanel.beginSheetModal(for: window) { (result: NSApplication.ModalResponse) in
-			
-			guard result == .OK else {
-				return
-			}
-			guard let url = savePanel.url else {
+		savePanel.beginSheetModal(for: window) { result in
+			guard result == .OK, let url = savePanel.url else {
 				return
 			}
 			
@@ -180,32 +159,9 @@ class MustangDocument: NSPersistentDocument {
 	
 	// MARK: - Private
 	
-	/*==========================================================================*/
-	private static let classInitialization: Void = {
-		
-		let defaultUsagePageTableSortKey = "usagePage"
-		let defaultUsageTableSortKey = "usage"
-		let usagePageTableSortDescriptorKey = "UsagePageTableSortDescriptors"
-		let usageTableSortDescriptorKey = "UsageTableSortDescriptors"
-		
-		let usagePageDescriptor = NSSortDescriptor(key: defaultUsagePageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)))
-		let usagePageData = NSKeyedArchiver.archivedData(withRootObject: [usagePageDescriptor])
-		
-		let usageDescriptor = NSSortDescriptor(key: defaultUsageTableSortKey, ascending: true, selector: #selector(NSNumber.compare(_:)))
-		let usageData = NSKeyedArchiver.archivedData(withRootObject: [usageDescriptor])
-		
-		let defaultDict = [
-			usagePageTableSortDescriptorKey: usagePageData,
-			usageTableSortDescriptorKey: usageData,
-		]
-		
-		UserDefaults.standard.register(defaults: defaultDict)
-	}()
-	
 	private static let collectionTypeNames = ["None", "Application", "NamedArray", "Logical", "Physical"]
 	
 	private static let sqliteOptions: [String: Any] = [
-		
 		// These allow automatic migration
 		NSMigratePersistentStoresAutomaticallyOption: true,
 		NSInferMappingModelAutomaticallyOption: true,
@@ -214,34 +170,27 @@ class MustangDocument: NSPersistentDocument {
 		NSSQLitePragmasOption: ["journal_mode": "DELETE"],
 	]
 	
-	/*==========================================================================*/
 	private func importFromURL(_ URL: Foundation.URL) {
-		
 		guard let managedObjectContext = self.managedObjectContext else {
 			fatalError("failed to obtain managed object context")
 		}
-		
 		guard let hidDictionary = NSDictionary(contentsOf: URL) else {
 			Swift.print("\(URL) does not contain an archived dictionary")
 			return
 		}
-		
 		guard let usagePagesDict = hidDictionary[HIDManagerKey.usagePages] as? [String: [String: AnyObject]] else {
 			Swift.print("Archived dictionary does not contain a '\(HIDManagerKey.usagePages)' value at its root")
 			return
 		}
 		
 		managedObjectContext.performAndWait {
-			
 			for (usagePageKey, usagePageDict) in usagePagesDict {
-				
 				let pageScanner = Scanner(string: usagePageKey)
-				var usagePage: UInt32 = 0
-				guard pageScanner.scanHexInt32(&usagePage) else {
+				var usagePage: UInt64 = 0
+				guard pageScanner.scanHexInt64(&usagePage) else {
 					Swift.print("Usage page key '\(usagePageKey) does not contain a hex value")
 					continue
 				}
-				
 				guard let usagePageName = usagePageDict[HIDManagerKey.usagePageName] as? String else {
 					Swift.print("Dictionary for usage page '\(usagePageKey) does not contain a '\(HIDManagerKey.usagePageName)' value")
 					continue
@@ -254,13 +203,14 @@ class MustangDocument: NSPersistentDocument {
 				newUsagePage.setValue(usagePageName, forKey: Entity.UsagePage.nameKey)
 				newUsagePage.setValue(usageNameFormat, forKey: Entity.UsagePage.usageNameFormatKey)
 				
-				guard let usagesDict = usagePageDict[HIDManagerKey.usages] as? [String: [String: AnyObject]] else { continue }
+				guard let usagesDict = usagePageDict[HIDManagerKey.usages] as? [String: [String: AnyObject]] else {
+					continue
+				}
 				
 				for (usageKey, usageDict) in usagesDict {
-					
 					let usageScanner = Scanner(string: usageKey)
-					var usage: UInt32 = 0
-					if usageScanner.scanHexInt32(&usage) == false { continue }
+					var usage: UInt64 = 0
+					if usageScanner.scanHexInt64(&usage) == false { continue }
 					
 					guard let usageName = usageDict[HIDManagerKey.usageName] as? String else {
 						Swift.print("Dictionary for usage '\(usagePageKey):\(usageKey) does not contain a '\(HIDManagerKey.usageName)' value")
@@ -280,9 +230,7 @@ class MustangDocument: NSPersistentDocument {
 		}
 	}
 	
-	/*==========================================================================*/
 	private func exportToURL(_ URL: Foundation.URL) {
-		
 		guard let managedObjectContext = self.managedObjectContext else {
 			fatalError("failed to obtain managed object context")
 		}
@@ -294,16 +242,13 @@ class MustangDocument: NSPersistentDocument {
 		rootDictionary[HIDManagerKey.usagePages] = usagePagesDict
 		
 		managedObjectContext.performAndWait {
-			
 			let usagePageRequest = NSFetchRequest<NSFetchRequestResult>()
 			usagePageRequest.entity = NSEntityDescription.entity(forEntityName: Entity.UsagePage.entityName, in: managedObjectContext)
 			
 			do {
-				
 				let usagePageResult = try managedObjectContext.fetch(usagePageRequest)
 				
 				for usagePageEntity in usagePageResult {
-					
 					guard let usagePage = (usagePageEntity as AnyObject).value(forKey: Entity.UsagePage.usagePageKey) as? Int else {
 						fatalError("Failed to obtain usage page value")
 					}
@@ -324,10 +269,11 @@ class MustangDocument: NSPersistentDocument {
 					let usagesDict = NSMutableDictionary()
 					usagePageDict[HIDManagerKey.usages] = usagesDict
 					
-					guard let usageEntities = (usagePageEntity as AnyObject).value(forKey: Entity.UsagePage.usagesKey) as? NSSet else { continue }
+					guard let usageEntities = (usagePageEntity as AnyObject).value(forKey: Entity.UsagePage.usagesKey) as? NSSet else {
+						continue
+					}
 					
 					for usageEntity in usageEntities {
-						
 						guard let usage = (usageEntity as AnyObject).value(forKey: Entity.Usage.usageKey) as? Int else {
 							fatalError("Failed to obtain usage value")
 						}
@@ -340,7 +286,6 @@ class MustangDocument: NSPersistentDocument {
 						usageDict[HIDManagerKey.usageName] = usageName
 						
 						if let collectionType = (usageEntity as AnyObject).value(forKey: Entity.Usage.collectionTypeKey) as? Int {
-							
 							if collectionType > 0 {
 								usageDict[HIDManagerKey.collectionType] = MustangDocument.collectionTypeNames[collectionType]
 							}
@@ -367,36 +312,35 @@ class MustangDocument: NSPersistentDocument {
 		}
 	}
 	
-	/*==========================================================================*/
 	private func errorStringForErrors(_ errors: [NSError]) -> String {
-		
 		let maxDisplayErrorCount = 5
-		var errorString = ""
 		
-		if errors.count > 1 {
-			errorString = "There are \(errors.count) validation errors:"
-		}
-		
-		for error in errors.prefix(maxDisplayErrorCount) {
-			
-			if let validationObject = error.userInfo[NSValidationObjectErrorKey] {
-				if let usagePage = (validationObject as AnyObject).value(forKey: Entity.UsagePage.usagePageKey) as? Int {
-					// Only a Entity.UsagePage has a usagePage property as an Int
-					errorString += "\nUsage Page \(usagePage): "
-				}
-				else if let usage = (validationObject as AnyObject).value(forKey: Entity.Usage.usageKey) as? Int {
-					// Only a Entity.Usage has a usage property as an Int
-					errorString += "\nUsage \(usage): "
-				}
+		var errorDescriptions = errors.prefix(maxDisplayErrorCount).compactMap({ error -> String? in
+			guard let validationObject = error.userInfo[NSValidationObjectErrorKey] else {
+				return nil
 			}
 			
-			errorString += error.localizedDescription
+			if let usagePage = (validationObject as AnyObject).value(forKey: Entity.UsagePage.usagePageKey) as? Int {
+				// Only a Entity.UsagePage has a usagePage property as an Int
+				return "Usage Page \(usagePage): \(error.localizedDescription)"
+			} else if let usage = (validationObject as AnyObject).value(forKey: Entity.Usage.usageKey) as? Int {
+				// Only a Entity.Usage has a usage property as an Int
+				return "Usage \(usage): \(error.localizedDescription)"
+			} else {
+				return nil
+			}
+		})
+		
+		if errors.count > 1 {
+			let errorPreamble = String.localizedStringWithFormat("There are %d validation errors:", errors.count)
+			errorDescriptions.insert(errorPreamble, at: 0)
 		}
 		
 		if errors.count > maxDisplayErrorCount {
-			errorString += "\n\(errors.count - maxDisplayErrorCount) more errors…"
+			let errorAddendum = String.localizedStringWithFormat("%d more errors…", errors.count - maxDisplayErrorCount)
+			errorDescriptions.append(errorAddendum)
 		}
 		
-		return errorString
+		return errorDescriptions.joined(separator: "\n")
 	}
 }
