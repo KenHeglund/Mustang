@@ -9,7 +9,7 @@ import AppKit
 
 // MARK: - AppDelegate
 
-@NSApplicationMain
+@main
 class AppDelegate: NSObject, NSApplicationDelegate {
 	override func awakeFromNib() {
 		super.awakeFromNib()

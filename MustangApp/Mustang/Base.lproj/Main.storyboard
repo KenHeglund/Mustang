@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24506"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -693,13 +693,13 @@ DQ
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5N2-th-59J">
-                                                <rect key="frame" x="20" y="74" width="216" height="361"/>
+                                                <rect key="frame" x="20" y="75" width="216" height="360"/>
                                                 <clipView key="contentView" id="pEC-uG-8vX">
-                                                    <rect key="frame" x="1" y="1" width="214" height="359"/>
+                                                    <rect key="frame" x="1" y="1" width="214" height="358"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" emptySelection="NO" autosaveColumns="NO" rowHeight="14" headerView="Uez-Jp-kJW" id="QJt-XE-1Mg">
-                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="336"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="214" height="335"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -722,7 +722,7 @@ DQ
                                                                         <binding destination="nhu-KT-6uX" name="value" keyPath="arrangedObjects.usagePage" id="NPY-9u-5Sz"/>
                                                                     </connections>
                                                                 </tableColumn>
-                                                                <tableColumn identifier="name" width="149" minWidth="40" maxWidth="1000" id="NSH-O2-qaZ">
+                                                                <tableColumn identifier="name" width="120" minWidth="40" maxWidth="1000" id="NSH-O2-qaZ">
                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -760,7 +760,7 @@ DQ
                                                 </tableHeaderView>
                                             </scrollView>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cfL-cV-XkG">
-                                                <rect key="frame" x="20" y="46" width="21" height="23"/>
+                                                <rect key="frame" x="20" y="47" width="21" height="23"/>
                                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HTa-IR-IWf">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -774,7 +774,7 @@ DQ
                                                 </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hh3-xu-DC3">
-                                                <rect key="frame" x="40" y="46" width="21" height="23"/>
+                                                <rect key="frame" x="40" y="47" width="21" height="23"/>
                                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8bG-Rw-eBU">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -789,7 +789,7 @@ DQ
                                                 </connections>
                                             </button>
                                             <searchField wantsLayer="YES" focusRingType="none" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i7m-9h-9kX">
-                                                <rect key="frame" x="20" y="20" width="216" height="19"/>
+                                                <rect key="frame" x="20" y="20" width="216" height="20"/>
                                                 <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter by Name" usesSingleLineMode="YES" bezelStyle="round" id="HgD-Kd-Opi">
                                                     <font key="font" metaFont="smallSystem"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -832,13 +832,13 @@ DQ
                                         <autoresizingMask key="autoresizingMask"/>
                                         <subviews>
                                             <scrollView autohidesScrollers="YES" horizontalLineScroll="16" horizontalPageScroll="10" verticalLineScroll="16" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3mw-H7-1mW">
-                                                <rect key="frame" x="20" y="76" width="504" height="359"/>
+                                                <rect key="frame" x="20" y="77" width="504" height="358"/>
                                                 <clipView key="contentView" id="Ec4-L3-2HD">
-                                                    <rect key="frame" x="1" y="1" width="502" height="357"/>
+                                                    <rect key="frame" x="1" y="1" width="502" height="356"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
                                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="sequential" alternatingRowBackgroundColors="YES" autosaveColumns="NO" rowHeight="14" headerView="Pmf-Uf-HCf" id="5ES-eF-oSa">
-                                                            <rect key="frame" x="0.0" y="0.0" width="502" height="334"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="502" height="333"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>
                                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -861,7 +861,7 @@ DQ
                                                                         <binding destination="eOi-8s-1ss" name="value" keyPath="arrangedObjects.usage" id="wuv-VS-sAi"/>
                                                                     </connections>
                                                                 </tableColumn>
-                                                                <tableColumn identifier="name" width="334" minWidth="40" maxWidth="1000" id="fzE-4v-wLn">
+                                                                <tableColumn identifier="name" width="305" minWidth="40" maxWidth="1000" id="fzE-4v-wLn">
                                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Name">
                                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -932,7 +932,7 @@ DQ
                                                 </tableHeaderView>
                                             </scrollView>
                                             <button horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8mk-o0-d39">
-                                                <rect key="frame" x="20" y="46" width="21" height="23"/>
+                                                <rect key="frame" x="20" y="47" width="21" height="23"/>
                                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSAddTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nPX-hL-6Sg">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -951,7 +951,7 @@ DQ
                                                 </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UB5-CV-utU">
-                                                <rect key="frame" x="40" y="46" width="21" height="23"/>
+                                                <rect key="frame" x="40" y="47" width="21" height="23"/>
                                                 <buttonCell key="cell" type="smallSquare" bezelStyle="smallSquare" image="NSRemoveTemplate" imagePosition="overlaps" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oXa-no-MSW">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
@@ -984,7 +984,7 @@ DQ
                                                 </connections>
                                             </textField>
                                             <textField focusRingType="none" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dc5-Oj-ITL">
-                                                <rect key="frame" x="277" y="47" width="247" height="21"/>
+                                                <rect key="frame" x="277" y="48" width="247" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="6Vs-sf-Bo0"/>
                                                 </constraints>
@@ -1003,7 +1003,7 @@ DQ
                                                 </connections>
                                             </textField>
                                             <searchField wantsLayer="YES" focusRingType="none" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fzd-M4-1ZY">
-                                                <rect key="frame" x="20" y="20" width="504" height="19"/>
+                                                <rect key="frame" x="20" y="20" width="504" height="20"/>
                                                 <searchFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" borderStyle="bezel" placeholderString="Filter by Name" usesSingleLineMode="YES" bezelStyle="round" id="Ifo-56-Z4N">
                                                     <font key="font" metaFont="smallSystem"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

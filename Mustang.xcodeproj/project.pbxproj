@@ -81,7 +81,6 @@
 		BEA7E6E21D027B9E00F39C0E /* MustangUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MustangUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEA7E6E61D027B9E00F39C0E /* MustangUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MustangUITests.swift; sourceTree = "<group>"; };
 		BEA7E6E81D027B9E00F39C0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BEB5AF57244704F6009498CD /* swiftlint.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = swiftlint.sh; sourceTree = "<group>"; };
 		BEB5AF5B24481C4F009498CD /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		BEB5AF5D24482608009498CD /* HIDManagerKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HIDManagerKey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -161,7 +160,6 @@
 		BE1AD88C1D064AFD00149E33 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
-				BEB5AF57244704F6009498CD /* swiftlint.sh */,
 				BE62F13F245D3EA5009C4B64 /* .swiftlint.yml */,
 			);
 			path = Scripts;
@@ -244,13 +242,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE1AD8701D0640B600149E33 /* Build configuration list for PBXNativeTarget "HIDSpecification" */;
 			buildPhases = (
-				BEB5AF54244702B2009498CD /* Run Script - swiftlint */,
 				BE1AD85A1D0640B600149E33 /* Sources */,
 				BE1AD85D1D0640B600149E33 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BE97A8F92F4E7074007074B3 /* PBXTargetDependency */,
 			);
 			name = HIDSpecification;
 			productName = HIDSpecification;
@@ -279,7 +277,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BEA7E6EB1D027B9E00F39C0E /* Build configuration list for PBXNativeTarget "Mustang" */;
 			buildPhases = (
-				BEB5AF6324482D7D009498CD /* Run Script - swiftlint */,
 				BEA7E6BD1D027B9E00F39C0E /* Sources */,
 				BEA7E6BE1D027B9E00F39C0E /* Frameworks */,
 				BEA7E6BF1D027B9E00F39C0E /* Resources */,
@@ -287,6 +284,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				BE97A8F72F4E7039007074B3 /* PBXTargetDependency */,
 			);
 			name = Mustang;
 			productName = Mustang;
@@ -337,7 +335,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 2630;
 				ORGANIZATIONNAME = OrderedBytes;
 				TargetAttributes = {
 					BE1AD85E1D0640B600149E33 = {
@@ -378,6 +376,9 @@
 				Base,
 			);
 			mainGroup = BEA7E6B81D027B9E00F39C0E;
+			packageReferences = (
+				BE97A8F52F4E7018007074B3 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+			);
 			productRefGroup = BEA7E6C21D027B9E00F39C0E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -432,49 +433,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		BEB5AF54244702B2009498CD /* Run Script - swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Scripts/swiftlint.sh",
-			);
-			name = "Run Script - swiftlint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "${SRCROOT}/Scripts/swiftlint.sh\n";
-		};
-		BEB5AF6324482D7D009498CD /* Run Script - swiftlint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Scripts/swiftlint.sh",
-			);
-			name = "Run Script - swiftlint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "${SRCROOT}/Scripts/swiftlint.sh\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BE1AD85A1D0640B600149E33 /* Sources */ = {
@@ -534,6 +492,14 @@
 			target = BE1AD85E1D0640B600149E33 /* HIDSpecification */;
 			targetProxy = BE1AD86A1D0640B600149E33 /* PBXContainerItemProxy */;
 		};
+		BE97A8F72F4E7039007074B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = BE97A8F62F4E7039007074B3 /* SwiftLintBuildToolPlugin */;
+		};
+		BE97A8F92F4E7074007074B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = BE97A8F82F4E7074007074B3 /* SwiftLintBuildToolPlugin */;
+		};
 		BEA7E6D91D027B9E00F39C0E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BEA7E6C01D027B9E00F39C0E /* Mustang */;
@@ -562,13 +528,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -581,6 +546,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.HIDSpecification;
@@ -597,13 +563,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -616,6 +581,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.HIDSpecification;
@@ -633,13 +599,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				INFOPLIST_FILE = MustangFramework/HIDSpecificationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.HIDSpecificationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -651,13 +617,13 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				INFOPLIST_FILE = MustangFramework/HIDSpecificationTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.HIDSpecificationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -696,6 +662,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -718,6 +685,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -756,6 +724,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -771,6 +740,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -786,13 +756,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/MustangApp/Mustang/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.Mustang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -809,13 +779,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/MustangApp/Mustang/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.Mustang;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -830,13 +800,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				INFOPLIST_FILE = MustangApp/MustangTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.MustangTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -852,13 +822,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				INFOPLIST_FILE = MustangApp/MustangTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.MustangTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -873,13 +843,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				INFOPLIST_FILE = MustangApp/MustangUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.MustangUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -894,13 +864,13 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 72C3P5QCVR;
 				INFOPLIST_FILE = MustangApp/MustangUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.orderedbytes.MustangUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -966,6 +936,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BE97A8F52F4E7018007074B3 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.63.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BE97A8F62F4E7039007074B3 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE97A8F52F4E7018007074B3 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		BE97A8F82F4E7074007074B3 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE97A8F52F4E7018007074B3 /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		BE1F1CDC1D05972400670EDD /* MustangDocument.xcdatamodeld */ = {
